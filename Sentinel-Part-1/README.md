@@ -18,6 +18,8 @@ Which will give us the number of rows from each table ordered from most rows to 
 
 ---
 
+
+
 ## 1.2): Getting more familiar with our EDR data (CrowdStrike)
 
 We can run the query:
@@ -51,6 +53,9 @@ This longer query makes a table that includes the device name (word after â€œonâ
 ![1.22](screenshots/1.22.png)
 
 ---
+
+
+
 
 ## 1.3): Palo Alto firewall logs
 
@@ -91,6 +96,9 @@ This shows us each drop, deny, or reset (TCP reset - connection closed on both e
 
 ---
 
+
+
+
 ## 1.4): Okta (MFA) events
 
 In this query we can see okta (MFA) events along with whether they were given permission/succeeded or failed:
@@ -121,6 +129,9 @@ We see no failed Okta logins/auths, which is a good sign, so we will move on.
 ![1.42](screenshots/1.42.png)
 
 ---
+
+
+
 
 ## 1.5): AWS cloud events
 
@@ -153,6 +164,9 @@ No results for this either which is good news.
 
 ---
 
+
+
+
 ## 1.6): Correlating potentially malicious indicators
 
 With this query we will put it all together and take all of the potentially malicious indicators from all of the sources we just explored and put them in one table containing their respective severities, alert names, and times of occurrence. Since we are querying for the union of many events over time, defender also produces a graph showing total number of potentially malicious events at certain times:
@@ -182,6 +196,9 @@ union
 This is a lot of valuable information, and we can see spikes at 4:15am, 4:34am, 4:39am, and 5:39am. Analyzing the logs of the first spike at 4:34am, we can see multiple indicators of compromise, including malicious powershell execution, lateral movement via smb, security tool tampering, etc.
 
 ---
+
+
+
 
 ## 1.7): Writing detection rules
 
@@ -223,6 +240,9 @@ We only see 4 results in the last 24 hours, which honestly makes sense. We want 
 
 ---
 
+
+
+
 ## 1.8): Configuring the rule
 
 To stay extra vigilant, we will keep the lookback at last 24 hours, make the frequency of check to every hour, and the severity to high (along with other labels/descriptions):
@@ -237,6 +257,9 @@ We have our detection rule officially made:
 
 ---
 
+
+
+
 ## 1.9): Rule validation
 
 Here we confirm the rule was made and that we can run it:
@@ -248,6 +271,8 @@ And here we see it successfully triggered the same 4 alerts we saw when we first
 ![TA](screenshots/TA.png)
 
 ---
+
+
 
 
 # Key Skills Demonstrated
