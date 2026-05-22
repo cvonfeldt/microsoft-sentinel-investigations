@@ -1,4 +1,4 @@
-# SOC Investigation & Detection Engineering with Microsoft Sentinel (Part 2)
+# Sentinel Part 2 - Microsoft Defender Threat Intelligence (MDTI) Integration 
 
 ## 2.1): Setting up MDTI Connector
 
