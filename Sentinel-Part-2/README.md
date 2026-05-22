@@ -5,7 +5,7 @@
 To start part 2, we are going to download the MDTI connector (Microsoft defender threat intelligence). With this we can correlate and run our logs against the global MIcrosoft-professional derived indicators of compromise. It’s a great (semi) built-in tool to add protection and awareness to our SIEM and network. 
 
 After installing, we can connect to the connector:  
-(2.1.png)
+![1.1](screenshots/2.1.png)
 
 ---
 
@@ -13,7 +13,7 @@ After installing, we can connect to the connector:
 
 Now we want to ensure that indicators are indeed in our workspace by querying ThreatIntelIndicators (table with MDTI info):
 
-(2.3.png)
+![1.1](screenshots/2.2.png)
 
 We can see here we are indeed getting indicators from MDTI, but only events from a couple observable keys have been loaded in, so we just need to give it a little time for different types of logs to flow in.
 
@@ -34,7 +34,7 @@ ThreatIntelIndicators
 | take 20
 ```
 
-(2.21.png)
+![1.1](screenshots/2.21.png)
 
 So far we only see logs with observablekey of: network-traffic:src_ref.value, but we can see all of the different columns which give us valuable data regarding the alert including associated time variables, confidence of the indicator, and keys/values. 
 
@@ -83,7 +83,7 @@ CommonSecurityLog
 | sort by TimeGenerated desc
 ```
 
-(2.4.png)
+![1.1](screenshots/2.4.png)
 
 So looking at the logs that have flowed in so far, we can see that they are still only 2 observable keys: network-traffic:src_ref.value and file:hashes.'SHA-256', so joining on ipv4 addresses gives us no results yet. 
 
@@ -129,7 +129,7 @@ ThreatIntelIndicators
 | sort by TotalIndicators desc
 ```
 
-(2.5.png)
+![1.1](screenshots/2.5.png)
 
 Still just network-traffic:src_ref.value and file:hashes.'SHA-256' so far!
 
@@ -139,6 +139,6 @@ Still just network-traffic:src_ref.value and file:hashes.'SHA-256' so far!
 
 In defender there is also a much more detailed UI where we can see in depth analysis of each log coming in from ThreatIntelligenceIndicators, where we can inspect further for more info incase of concerning/potentially malicious activity:  
 
-(2.6.png)
+![1.1](screenshots/2.6.png)
 
 ## Doing some research I found that the premium version of azure gives you access to historical events/logs (from before we connected) from TII, but we will just wait until logs with different keys come in (if we don’t utilize this more in future parts).
