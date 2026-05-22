@@ -1,4 +1,4 @@
-# SOC Investigation & Detection Engineering with Microsoft Sentinel
+# Sentinel Part 1 - Exploration
 
 This portion of the investigation will primarily consist of getting familiar with our different sources of logs/events.
 
