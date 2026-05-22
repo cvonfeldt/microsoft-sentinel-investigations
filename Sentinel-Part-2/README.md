@@ -40,7 +40,7 @@ So far we only see logs with observablekey of: network-traffic:src_ref.value, bu
 
 ---
 
-## 2.3): ThreatIntelIndicators schema
+## 2.3): ThreatIntelIndicators table
 
 Here we have all of the columns in the ThreatIntelIndicators table:
 
