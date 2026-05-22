@@ -1,7 +1,5 @@
 # Sentinel Part 1 - Exploration
 
-This portion of the investigation will primarily consist of getting familiar with our different sources of logs/events.
-
 ## 1.1): Getting familiar with our data in the defender portal
 
 We can run the query:
