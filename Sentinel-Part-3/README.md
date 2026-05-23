@@ -13,13 +13,12 @@ Here we have all of the attack types that one of our active analytics rules cove
 Going up to switch to "Active scheduled query rules," we can see what attacks have been associated with our detection rules so far:
 
 ![3.2](screenshots/3.2.png)
-![3.21](screenshots/3.21.png)
 
-Doing some research, since our CrowdStrike custom rule was a Microsoft XDR rule, it won't show up here. As for all of the lab's deployed rules, since Sentinel is currently migrating to Microsoft Defender instead of Azure, the rules are now deployed as XDR rules instead of analytics rules, so they don't show up here either.
+Doing some research, since Sentinel is currently migrating to Microsoft Defender instead of Azure, and our CrowdStrike custom rule was a Microsoft XDR rule (not an analytics one), it won't show up here. The same goes for all of the lab's deployed rules - the rules are deployed as XDR rules instead of analytics rules, so they don't show up here either. I'm not sure if it's a bug at the moment, or if the lab deployed rules used to deploy to both analytics AND XDR, or what the deal is.
 
 In the lab it states "Microsoft Sentinel maps every analytics rule to MITRE tactics and techniques, giving you a heat-map view of your detection posture," but the lab deployed rules are all custom detection rules now. Hopefully once Sentinel fully migrates in July they will fix this.
 
-Just for confirmation that our deployed rules are working as intended, we can check the triggered alerts of one of the rules:
+Just for confirmation though that our deployed rules are working as intended, we can check the triggered alerts of one of the rules:
 
 ![3.31](screenshots/3.31.png)
 
