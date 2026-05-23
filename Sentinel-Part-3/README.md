@@ -69,7 +69,7 @@ This detects svchost.exe, lsass.exe, and other legitimate Windows processes runn
 ![3.5](screenshots/3.5.png)
 ![3.51](screenshots/3.51.png)
 
-Here we can see our enabled created rule!
+Here we can see our enabled created rule! It is at the top as the most recently created and has tactic: T1036: Masquerading.
 
 ![3.52](screenshots/3.52.png)
 
