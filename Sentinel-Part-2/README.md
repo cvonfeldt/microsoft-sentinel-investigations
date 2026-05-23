@@ -143,4 +143,16 @@ In defender there is also a much more detailed UI where we can see in depth anal
 
 ## Doing some research I found that the premium version of azure gives you access to historical events/logs (from before we connected) from TII, but we will just wait until logs with different keys come in (if we don’t utilize this more in future parts).
 
+## Key Skills Demonstrated
+- Threat Intelligence Integration
+- IOC Correlation
+- STIX/TAXII Framework Understanding
+- Multi-Source Log Correlation
+- Threat Intelligence Enrichment
+- Microsoft Defender Threat Intelligence (MDTI)
+- Kusto Query Language (KQL)
+- Firewall Log Analysis
+- Cloud Security Monitoring
+- Data Connector Configuration
+
 ## Stay tuned for part 3!
