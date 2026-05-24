@@ -1,89 +1,58 @@
-Sentinel Part 3 - MITRE ATT&CKs in Defender
+# Sentinel Part 4 - Automation Rules and Incident Enrichment
 
-# Sentinel Part 3 - MITRE ATT&CK Coverage
+## 4.1): Selecting Alerts for Incident Enrichment
+For this lab we will enrich alerts having to do with suspicious AWS activity as well as detection evasion - more specifically, log clearing, which we have seen a lot of so far, with the alert "NRT Security Event log cleared." 
 
-## 3.1): Getting familiar with the MITRE ATT&CK framework
-Getting familiar with the MITRE attack framework and how it correlates with our rules, we go to the UI in defender:
+Choosing alerts for each scenario to enrich, we will use that exact one mentioned above, as well as another incident that sounds very similar to the rules we intend on making: 
 
-![3.1](screenshots/3.1.png)
+Suspicious AWS CLI Command Execution
 
-Here we have all of the attack types that one of our active analytics rules covers (in blue), as well as the ones that aren't covered by our rules (in gray).
+![4.1](screenshots/4.1.png)
 
-## 3.2): Filtering by active scheduled query rules
-Going up to switch to "Active scheduled query rules," we can see what attacks have been associated with our detection rules so far:
+## 4.2): Creating an AWS Alert Enrichment Rule
+Here we can see our first rule created regarding AWS, which basically takes any incident where the analytics rule name has “AWS” and adds the tags “cloud-event” and “aws” to it, effectively enhancing the rule with tags.
 
-![3.2](screenshots/3.2.png)
+![4.2](screenshots/4.2.png)
 
-Doing some research, since Sentinel is currently migrating to Microsoft Defender instead of Azure, and our CrowdStrike custom rule was a Microsoft XDR rule (not an analytics one), it won't show up here. The same goes for all of the lab's deployed rules - the rules are deployed as XDR rules instead of analytics rules, so they don't show up here either. I'm not sure if it's a bug at the moment, or if the lab deployed rules used to deploy to both analytics AND XDR, or what the deal is.
+## 4.3): Enhancing Security Log Clearing Alerts
+Now for the security log clearing enhancement: 
 
-In the lab it states "Microsoft Sentinel maps every analytics rule to MITRE tactics and techniques, giving you a heat-map view of your detection posture," but the lab deployed rules are all custom detection rules now. Hopefully once Sentinel fully migrates in July they will fix this.
+![4.3](screenshots/4.3.png)
+![4.3](screenshots/4.31.png)
 
-Just for confirmation though that our deployed rules are working as intended, we can check the triggered alerts of one of the rules:
+This rule adds tags “defense-evasion” and “log-tampering,” and changes the severity of the alert to high (highest out of the 4).
 
-![3.31](screenshots/3.31.png)
+## 4.4): Understanding Rule Priority and AND Conditions
+Seeing both of our created rules, we know that they go in priority order, and we can see in the photos above that both are set to “AND” conditions. 
 
-And we can see all of the different techniques that each of our rules would map to in the "techniques" column here:
+![4.4](screenshots/4.4.png)
 
-![3.32](screenshots/3.32.png)
+This means that all conditions must be met in the rule for it to be executed, as opposed to “OR” where only one condition needs to be met. Although this doesn’t apply here since we made only one condition per rule, it’s good to know what it is for future rules made with more than 1 condition. 
 
-## 3.3): Exploring a specific MITRE tactic
-Back to the MITRE tactics, we can see which of our rules apply to a specific tactic by clicking on it:
+## 4.5): Waiting for Triggered Incidents
+We don’t see any incidents yet with AWS or security log clearing, but once they come through and I see the enhanced changes, I’ll come back and upload a screenshot!
 
-![3.3](screenshots/3.3.png)
+## 4.6): Exploring Advanced Automation Rule Use Cases
+We see how automation rules can get much more advanced with scenarios such as: 
 
-## 3.4): Identifying coverage gaps
-Instead of identifying unshaded tactics here, I will just refer to the photo above and pick a few tactics unaccounted for amongst our rules. It looks like these three common MITRE tactics are unaccounted for:
+| Action | Use case |
+|---|---|
+| Assign owner | Route phishing incidents to the email security team |
+| Change status | Auto-close known false positives |
+| Run playbook | Trigger a Logic App to send a Teams notification, block an IP, or isolate a device |
+| Add task | Create an investigation checklist for the assigned analyst |
 
-- **Defense Evasion** - T1036 (Masquerading) and T1027 (Obfuscated Files or Information) - no current rules detect malicious processes disguising themselves as legitimate software or obfuscated payloads in the telemetry
-- **Reconnaissance** - no rules for T1595 (Active scanning) or T1589 (Gather Victim Identity Information) - pre-attack activity outside SOC telemetry scope
-- **Lateral Movement** - no rules for T1021 (Remote services), T1550 (Pass the Hash), or east-west movement between hosts
-
-## 3.5): Creating a custom detection rule for Defense Evasion
-Now to make a custom rule for one of them, we will choose Defense Evasion:
-
-```kql
-SecurityEvent
-| where TimeGenerated > ago(4h)
-| where EventID == 4688
-| where Process has_any ("svchost.exe", "lsass.exe", "explorer.exe", "winlogon.exe")
-| where NewProcessName !startswith "C:\\Windows\\System32"
-| where NewProcessName !startswith "C:\\Windows\\SysWOW64"
-| project
-    TimeGenerated,
-    Computer,
-    Account,
-    Process,
-    NewProcessName,
-    CommandLine,
-    ParentProcessName
-| extend
-    DeviceName = Computer,
-    AccountUpn = Account,
-    ProcessCommandLine = CommandLine,
-    FileName = Process,
-    ReportId = tostring(hash_sha256(strcat(Computer, NewProcessName, tostring(TimeGenerated))))
-```
-
-This detects svchost.exe, lsass.exe, and other legitimate Windows processes running from anywhere outside System32 - a classic masquerading technique where malware copies a legitimate Windows process name but runs it from a different location like `C:\Temp\svchost.exe`.
-
-![3.5](screenshots/3.5.png)
-![3.51](screenshots/3.51.png)
-
-Here we can see our enabled created rule! It is at the top as the most recently created and has tactic: T1036: Masquerading.
-
-![3.52](screenshots/3.52.png)
-
-Going to the MITRE framework grid, the square "T1036: Masquerading" is still white, so this confirms that our rules aren't correctly mapping to MITRE unfortunately, but they are working alert-wise which is the important part!
+This lab has us sticking to tag-based automation for now, but we can see above, especially with the “run playbook” option, how sentinel can be used for SOAR operations.
 
 ## Key Skills Demonstrated
-- MITRE ATT&CK Framework Analysis
-- Detection Coverage Assessment
-- Security Gap Identification
-- Detection Engineering
-- Kusto Query Language (KQL)
-- Defender XDR Custom Detection Rules
-- Microsoft Sentinel Analytics
-- Multi-Source Attack Chain Mapping
-- Defense Posture Evaluation
+- Microsoft Sentinel Automation Rules
+- Incident Enrichment
+- Alert Tagging
+- Severity Tuning
+- SOC Workflow Automation
+- Security Orchestration, Automation, and Response (SOAR)
+- Incident Prioritization
+- Cloud Security Monitoring
+- Microsoft Defender XDR Integration
 
-## Stay tuned for part 4!
+## Stay tuned for part 5!
