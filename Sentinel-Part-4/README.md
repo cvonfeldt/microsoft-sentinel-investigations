@@ -25,6 +25,7 @@ Here we can see our first rule created regarding AWS, which basically takes any 
 Now for the security log clearing enhancement: 
 
 ![4.3](screenshots/4.3.png)
+![4.3](screenshots/4.31.png)
 
 This rule adds tags “defense-evasion” and “log-tampering,” and changes the severity of the alert to high (highest out of the 4).
 
