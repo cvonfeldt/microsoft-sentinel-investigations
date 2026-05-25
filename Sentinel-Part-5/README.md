@@ -17,9 +17,10 @@ CommonSecurityLog
     p99 = percentile(DistinctPorts, 99),
     max_ports = max(DistinctPorts)
 ```
-
+<br>
 Since port scanning connections are often dropped (drop, reset, deny) by palo alto, this query aggregates firewall logs to statistically define the "normal" number of unique destination ports targeted by blocked traffic, allowing us to establish a baseline threshold for identifying suspicious network scanning behavior.
 
+<br>
 The last 24 hours showed no results, so I change the timeframe to the last 7 days, and got the results shown below:
 
 ![5.1](screenshots/5.1.png)
@@ -70,10 +71,11 @@ CommonSecurityLog
     RemoteIP = DestinationIP,
     ReportId = tostring(hash_sha256(strcat(SourceIP, DestinationIP, tostring(DistinctPorts))))
 ```
-
+<br>
 This long rule alerts us when 25+ port connections are dropped and gives us a lot of info regarding the dropped connections such as a list of the ports, number of denied scans, the time elapsed between the first and the last dropped port scanned, the ports scanned per minute, etc.
 
 ![5.2](screenshots/5.21.png)
+<br>
 ![5.2](screenshots/5.22.png)
 
 ---
@@ -82,15 +84,17 @@ This long rule alerts us when 25+ port connections are dropped and gives us a lo
 Now to confirm the rule works the way we intended by manually running the query:
 
 ![5.3](screenshots/5.3.png)
+<br>
 ![5.3](screenshots/5.31.png)
-
+<br>
 We can see the portList column, and expanding to see all of the ports:
 ![5.3](screenshots/5.33.png)
-
+<br>
 We can see it's all of the common high-value attack vector ports (remote ports, lateral movement ports, database ports).
-
+<br>
 Going back to the query output:
 ![5.3](screenshots/5.32.png)
+<br>
 
 It looks like all of the columns correctly outputted as intended! We can see that every single port of the 25 were dropped at the exact same time, with the FirstSeen and LastSeen both being May 22, 2026 7:10:19 AM. <br><br>
 We also see that the source IP was internal: 10.0.1.50, which could be a few things: That we are dealing with a routine internal port scan for patching, or more worrisome, an insider threat... Or even MORE worrisome, a compromised machine. We will keep this in mind going forward!
