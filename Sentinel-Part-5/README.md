@@ -78,13 +78,12 @@ CommonSecurityLog
 <br>
 This long rule alerts us when 25+ port connections are dropped and gives us a lot of info regarding the dropped connections such as a list of the ports, number of denied scans, the time elapsed between the first and the last dropped port scanned, the ports scanned per minute, etc.
 <br>
-<br>
-<br>
+
 ![5.2](screenshots/5.21.png)
 <br>
 <br>
 <br>
-![5.2](screenshots/5.22.png)
+![5.3](screenshots/5.3.png)
 <br>
 
 ---
