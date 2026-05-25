@@ -76,6 +76,7 @@ SecurityEvent
 ```
 
 This detects svchost.exe, lsass.exe, and other legitimate Windows processes running from anywhere outside System32 - a classic masquerading technique where malware copies a legitimate Windows process name but runs it from a different location like `C:\Temp\svchost.exe`.
+<br>
 
 ![3.5](screenshots/3.5.png)
 
