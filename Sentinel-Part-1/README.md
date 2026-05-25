@@ -9,7 +9,7 @@ search *
 | summarize EventCount = count() by $table
 | sort by EventCount desc
 ```
-
+<br>
 Which will give us the number of rows from each table ordered from most rows to least - we can see plenty of sources to work with here:
 
 ![1.1](screenshots/1.1photo.png)
@@ -27,11 +27,12 @@ CrowdStrikeAlerts
 | summarize AlertCount = count() by Name, SeverityName, Tactic
 | sort by AlertCount desc
 ```
-
+<br>
 Which gives us specific alerts with their count in descending order, along with their name, severity name, and MITRE tactic:
 
 ![1.21](screenshots/1.21photo.png)
-
+<br>
+<br>
 Digging further in our CrowdStrike alerts, we run the query:
 
 ```kql
@@ -73,7 +74,7 @@ CommonSecurityLog
 With this query we can see each reported firewall activity along with number of occurrences (in descending order) and unique source/destination IP addresses. We see that all of the alerts have only one associated source IP address, so we will keep that in mind:
 
 ![1.3](screenshots/1.3.png)
-
+<br>
 In this query we can see all of the denied/blocked traffic:
 
 ```kql
@@ -87,7 +88,7 @@ CommonSecurityLog
 | sort by BlockedConnections desc
 | take 10
 ```
-
+<br>
 This shows us each drop, deny, or reset (TCP reset - connection closed on both ends) from firewall by source IP (up to 10) along with number of occurrences and unique dest ports. We can see that they do indeed all come from one source IP: `10.0.1.50`, with 500 blocked connections and 124 unique ports involved. Very suspicious…
 
 ![1.32](screenshots/1.32.png)
@@ -108,7 +109,8 @@ OktaV2_CL
 ```
 
 ![1.41](screenshots/1.41.png)
-
+<br>
+<br>
 Here we will look specifically for failed logins from specific IPs as well as their country and username with the query:
 
 ```kql
@@ -121,7 +123,7 @@ OktaV2_CL
     by ActorUsername
 | sort by FailedAttempts desc
 ```
-
+<br>
 We see no failed Okta logins/auths, which is a good sign, so we will move on.
 
 ![1.42](screenshots/1.42.png)
@@ -143,7 +145,7 @@ AWSCloudTrail
 ```
 
 ![1.51](screenshots/1.51.png)
-
+<br>
 We can see a wide range of events such as logins, instance events, user lists, etc. Like 1.4, we will look for fails to potentially spot malicious activity. This query tells us failed API calls and the attempting user, error code, and event name of the api call:
 
 ```kql
@@ -157,7 +159,7 @@ AWSCloudTrail
 ```
 
 ![1.52](screenshots/1.52.png)
-
+<br>
 No results for this either which is good news.
 
 ---
@@ -189,8 +191,10 @@ union
 
 ![1.6](screenshots/1.6.png)
 
-![1.61](screenshots/1.61.png)
+<br>
 
+![1.61](screenshots/1.61.png)
+<br>
 This is a lot of valuable information, and we can see spikes at 4:15am, 4:34am, 4:39am, and 5:39am. Analyzing the logs of the first spike at 4:34am, we can see multiple indicators of compromise, including malicious powershell execution, lateral movement via smb, security tool tampering, etc.
 
 ---
@@ -233,7 +237,7 @@ Here we are making a rule that gives us crowdstrike alerts on specific devices i
 When I entered the query, it returned no results in the last 4 hours, so just to see the table I changed it to last 24 hours:
 
 ![1.71](screenshots/1.71.png)
-
+<br>
 We only see 4 results in the last 24 hours, which honestly makes sense. We want the rule to be specific enough to where we are isolating truly potentially malicious events and not getting a high number of false positives. We can now make this into a detection rule.
 
 ---
@@ -246,9 +250,9 @@ We only see 4 results in the last 24 hours, which honestly makes sense. We want 
 To stay extra vigilant, we will keep the lookback at last 24 hours, make the frequency of check to every hour, and the severity to high (along with other labels/descriptions):
 
 ![Lookback](screenshots/lookbackactuallycorrect.png)
-
 ![1.81](screenshots/1.81.png)
-
+<br>
+<br>
 We have our detection rule officially made:
 
 ![Rule](screenshots/rulecorrect.png)
@@ -263,6 +267,8 @@ We have our detection rule officially made:
 Here we confirm the rule was made and that we can run it:
 
 ![Running](screenshots/running.png)
+<br>
+<br>
 
 And here we see it successfully triggered the same 4 alerts we saw when we first made the query, so we know it’s working as intended!
 
