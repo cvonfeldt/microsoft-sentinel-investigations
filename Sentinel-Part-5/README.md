@@ -29,7 +29,7 @@ These results tell us that most of the dropped connections were only to 1 or 2 p
 ---
 
 ## 5.2): Building the Detection Rule
-Since the max is 25 ports of dropped connection, we will set our threshold to alert on > 24 ports of dropped connection:
+Since the max we saw in our data is 25 ports of dropped connection, we will set our threshold to alert on > 24 ports of dropped connection:
 
 ```kusto
 CommonSecurityLog
