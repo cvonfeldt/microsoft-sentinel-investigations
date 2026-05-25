@@ -99,7 +99,9 @@ We can see it's all of the common high-value attack vector ports (remote ports, 
 <br>
 <br>
 Going back to the query output:
+<br>
 ![5.3](screenshots/5.32.png)
+<br>
 <br>
 
 It looks like all of the columns correctly outputted as intended! We can see that every single port of the 25 were dropped at the exact same time, with the FirstSeen and LastSeen both being May 22, 2026 7:10:19 AM. <br><br>
