@@ -58,6 +58,7 @@ Here we have all of the columns in the ThreatIntelIndicators table:
 | Tags | Sentinel-defined tags | Labels and categories |
 
 Doing a little research of STIX, I found that it is a structured language for describing cyber threats in a consistent way so different security tools can share and understand the same intelligence. 
+
 <br>
 ---
 
@@ -133,6 +134,7 @@ ThreatIntelIndicators
 ![1.1](screenshots/2.5.png)
 
 Still just network-traffic:src_ref.value and file:hashes.'SHA-256' so far!
+
 <br>
 ---
 
@@ -144,6 +146,7 @@ In defender there is also a much more detailed UI where we can see in depth anal
 
 ## Doing some research I found that the premium version of azure gives you access to historical events/logs (from before we connected) from TII, but we will just wait until logs with different keys come in (if we don’t utilize this more in future parts).
 <br>
+
 ## Key Skills Demonstrated
 - Threat Intelligence Integration
 - IOC Correlation
