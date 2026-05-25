@@ -93,8 +93,8 @@ Now to confirm the rule works the way we intended by manually running the query:
 <br>
 We can see the portList column, and expanding to see all of the ports:
 <br>
-![5.3](screenshots/5.33.png)
 <br>
+![5.3](screenshots/5.33.png)
 <br>
 We can see it's all of the common high-value attack vector ports (remote ports, lateral movement ports, database ports).
 <br>
