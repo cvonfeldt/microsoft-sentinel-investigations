@@ -1,5 +1,5 @@
-# Sentinel Part 5 - Palo Alto Firewall Port Scan Detection
-## 5.1): Investigating Port Scanning Activity
+# Sentinel Part 6 - Palo Alto Firewall Port Scan Detection
+## 6.1): Investigating Port Scanning Activity
 In this portion of the lab, we will investigate port scanning activity on palo alto firewall (MITRE T1046). Before diving into it, we will get a gauge on our port diversity with the query:
 <br>
 
@@ -31,7 +31,7 @@ These results tell us that most of the dropped connections were only to 1 or 2 p
 
 ---
 
-## 5.2): Building the Detection Rule
+## 6.2): Building the Detection Rule
 Since the max we saw in our data is 25 ports of dropped connection, we will set our threshold to alert on > 24 ports of dropped connection:
 <br>
 
@@ -86,7 +86,7 @@ This long rule alerts us when 25+ port connections are dropped and gives us a lo
 
 ---
 
-## 5.3): Validating the Rule
+## 6.3): Validating the Rule
 Now to confirm the rule works the way we intended by manually running the query:
 
 ![5.3](screenshots/5.3.png)
