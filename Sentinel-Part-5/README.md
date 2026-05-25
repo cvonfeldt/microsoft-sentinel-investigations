@@ -18,8 +18,6 @@ CommonSecurityLog
     p99 = percentile(DistinctPorts, 99),
     max_ports = max(DistinctPorts)
 ```
-<br>
-<br>
 Since port scanning connections are often dropped (drop, reset, deny) by palo alto, this query aggregates firewall logs to statistically define the "normal" number of unique destination ports targeted by blocked traffic, allowing us to establish a baseline threshold for identifying suspicious network scanning behavior.
 
 <br>
