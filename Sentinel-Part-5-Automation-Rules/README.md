@@ -1,6 +1,6 @@
-# Sentinel Part 4 - Automation Rules and Incident Enrichment
+# Sentinel Part 5 - Automation Rules and Incident Enrichment
 
-## 4.1): Selecting Alerts for Incident Enrichment
+## 5.1): Selecting Alerts for Incident Enrichment
 
 For this lab we will enrich alerts having to do with suspicious AWS activity as well as detection evasion - more specifically, log clearing, which we have seen a lot of so far, with the alert "NRT Security Event log cleared." 
 
@@ -12,7 +12,7 @@ Suspicious AWS CLI Command Execution
 
 ---
 
-## 4.2): Creating an AWS Alert Enrichment Rule
+## 5.2): Creating an AWS Alert Enrichment Rule
 
 Here we can see our first rule created regarding AWS, which basically takes any incident where the analytics rule name has “AWS” and adds the tags “cloud-event” and “aws” to it, effectively enhancing the rule with tags.
 
@@ -20,7 +20,7 @@ Here we can see our first rule created regarding AWS, which basically takes any 
 
 ---
 
-## 4.3): Enhancing Security Log Clearing Alerts
+## 5.3): Enhancing Security Log Clearing Alerts
 
 Now for the security log clearing enhancement: 
 
@@ -31,7 +31,7 @@ This rule adds tags “defense-evasion” and “log-tampering,” and changes t
 
 ---
 
-## 4.4): Understanding Rule Priority and AND Conditions
+## 5.4): Understanding Rule Priority and AND Conditions
 
 Seeing both of our created rules, we know that they go in priority order, and we can see in the photos above that both are set to “AND” conditions. 
 
@@ -41,13 +41,13 @@ This means that all conditions must be met in the rule for it to be executed, as
 
 ---
 
-## 4.5): Waiting for Triggered Incidents
+## 5.5): Waiting for Triggered Incidents
 
 We don’t see any incidents yet with AWS or security log clearing, but once we do and see the enhanced changes, I’ll come back and upload a screenshot!
 
 ---
 
-## 4.6): Exploring Advanced Automation Rule Use Cases
+## 5.6): Exploring Advanced Automation Rule Use Cases
 
 We see how automation rules can get much more advanced with scenarios such as: 
 
