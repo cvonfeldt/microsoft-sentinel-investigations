@@ -26,12 +26,14 @@ The last 24 hours showed no results, so I change the timeframe to the last 7 day
 
 ![5.1](screenshots/5.1.png)
 
+<br>
 These results tell us that most of the dropped connections were only to 1 or 2 ports (up to 50% for 1 port that dropped connection, and up to 95% were 2 ports that dropped connections) - which happens frequently - but the 99th percentile have 25 dropped connections, which is a hallmark sign of port scanning.
 
 ---
 
 ## 5.2): Building the Detection Rule
 Since the max we saw in our data is 25 ports of dropped connection, we will set our threshold to alert on > 24 ports of dropped connection:
+<br>
 
 ```kusto
 CommonSecurityLog
@@ -74,7 +76,7 @@ CommonSecurityLog
 ```
 <br>
 This long rule alerts us when 25+ port connections are dropped and gives us a lot of info regarding the dropped connections such as a list of the ports, number of denied scans, the time elapsed between the first and the last dropped port scanned, the ports scanned per minute, etc.
-
+<br>
 ![5.2](screenshots/5.21.png)
 <br>
 ![5.2](screenshots/5.22.png)
