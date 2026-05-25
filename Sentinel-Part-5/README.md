@@ -81,7 +81,7 @@ This long rule alerts us when 25+ port connections are dropped and gives us a lo
 <br>
 <br>
 <br>
-![5.3](screenshots/5.3.png)
+![5.3](screenshots/5.22.png)
 <br>
 
 ---
