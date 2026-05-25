@@ -38,6 +38,7 @@ ThreatIntelIndicators
 
 So far we only see logs with observablekey of: network-traffic:src_ref.value, but we can see all of the different columns which give us valuable data regarding the alert including associated time variables, confidence of the indicator, and keys/values. 
 
+<br>
 ---
 
 ## 2.3): ThreatIntelIndicators table
@@ -57,7 +58,7 @@ Here we have all of the columns in the ThreatIntelIndicators table:
 | Tags | Sentinel-defined tags | Labels and categories |
 
 Doing a little research of STIX, I found that it is a structured language for describing cyber threats in a consistent way so different security tools can share and understand the same intelligence. 
-
+<br>
 ---
 
 ## 2.4): Correlating threat intel with firewall and cloud logs
@@ -112,7 +113,7 @@ AWSCloudTrail
 If we had the data, it would join this time on source IP and give us valuable information from both tables. 
 
 If I end up don’t utilize this in later parts of the investigation, I will come back once logs with more types of observablekeys have been ingested!
-
+<br>
 ---
 
 ## 2.5): ThreatIntelIndicators coverage
@@ -132,7 +133,7 @@ ThreatIntelIndicators
 ![1.1](screenshots/2.5.png)
 
 Still just network-traffic:src_ref.value and file:hashes.'SHA-256' so far!
-
+<br>
 ---
 
 ## 2.6): ThreatIntelIndicators UI view
@@ -142,7 +143,7 @@ In defender there is also a much more detailed UI where we can see in depth anal
 ![1.1](screenshots/2.6.png)
 
 ## Doing some research I found that the premium version of azure gives you access to historical events/logs (from before we connected) from TII, but we will just wait until logs with different keys come in (if we don’t utilize this more in future parts).
-
+<br>
 ## Key Skills Demonstrated
 - Threat Intelligence Integration
 - IOC Correlation
