@@ -77,15 +77,20 @@ SecurityEvent
 
 This detects svchost.exe, lsass.exe, and other legitimate Windows processes running from anywhere outside System32 - a classic masquerading technique where malware copies a legitimate Windows process name but runs it from a different location like `C:\Temp\svchost.exe`.
 <br>
+<br>
 
 ![3.5](screenshots/3.5.png)
 
 ![3.51](screenshots/3.51.png)
-
+<br>
+<br>
+<br>
 Here we can see our enabled created rule! It is at the top as the most recently created and has tactic: T1036: Masquerading.
 
 ![3.52](screenshots/3.52.png)
 
+<br>
+<br>
 Going to the MITRE framework grid, the square "T1036: Masquerading" is still white, so this confirms that our rules aren't correctly mapping to MITRE unfortunately, but they are working alert-wise which is the important part!
 
 ---
