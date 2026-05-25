@@ -38,7 +38,6 @@ ThreatIntelIndicators
 
 So far we only see logs with observablekey of: network-traffic:src_ref.value, but we can see all of the different columns which give us valuable data regarding the alert including associated time variables, confidence of the indicator, and keys/values. 
 
-<br>
 ---
 
 ## 2.3): ThreatIntelIndicators table
@@ -59,7 +58,6 @@ Here we have all of the columns in the ThreatIntelIndicators table:
 
 Doing a little research of STIX, I found that it is a structured language for describing cyber threats in a consistent way so different security tools can share and understand the same intelligence. 
 
-<br>
 ---
 
 ## 2.4): Correlating threat intel with firewall and cloud logs
@@ -114,7 +112,7 @@ AWSCloudTrail
 If we had the data, it would join this time on source IP and give us valuable information from both tables. 
 
 If I end up don’t utilize this in later parts of the investigation, I will come back once logs with more types of observablekeys have been ingested!
-<br>
+
 ---
 
 ## 2.5): ThreatIntelIndicators coverage
@@ -135,7 +133,6 @@ ThreatIntelIndicators
 
 Still just network-traffic:src_ref.value and file:hashes.'SHA-256' so far!
 
-<br>
 ---
 
 ## 2.6): ThreatIntelIndicators UI view
