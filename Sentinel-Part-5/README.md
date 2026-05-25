@@ -85,7 +85,7 @@ Now to confirm the rule works the way we intended by manually running the query:
 ![5.3](screenshots/5.31.png)
 
 We see the list of ports column, and expanding to see all of the ports, we can see it's all of the common high-value attack vector ports (remote ports, lateral movement ports, database ports):
-![5.3](screenshots/5.34.png)
+![5.3](screenshots/5.33.png)
 
 Going back to the query output:
 ![5.3](screenshots/5.32.png)
