@@ -92,7 +92,8 @@ We can see it's all of the common high-value attack vector ports (remote ports, 
 Going back to the query output:
 ![5.3](screenshots/5.32.png)
 
-It looks like all of the columns correctly outputted as intended! We can see that every single port of the 25 were dropped at the exact same time, with the FirstSeen and LastSeen both being May 22, 2026 7:10:19 AM. We also see that the source IP was internal: 10.0.1.50, which could be a few things: That we are dealing with a routine internal port scan for patching, or more worrisome, an insider threat... Or even MORE worrisome, a compromised machine. We will keep this in mind going forward!
+It looks like all of the columns correctly outputted as intended! We can see that every single port of the 25 were dropped at the exact same time, with the FirstSeen and LastSeen both being May 22, 2026 7:10:19 AM. 
+We also see that the source IP was internal: 10.0.1.50, which could be a few things: That we are dealing with a routine internal port scan for patching, or more worrisome, an insider threat... Or even MORE worrisome, a compromised machine. We will keep this in mind going forward!
 
 ---
 
