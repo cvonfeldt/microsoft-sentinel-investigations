@@ -25,10 +25,9 @@ The last 24 hours showed no results, so I change the timeframe to the last 7 day
 <br>
 
 ![5.1](screenshots/5.1.png)
-
-<br>
 <br>
 These results tell us that most of the dropped connections were only to 1 or 2 ports (up to 50% for 1 port that dropped connection, and up to 95% were 2 ports that dropped connections) - which happens frequently - but the 99th percentile have 25 dropped connections, which is a hallmark sign of port scanning.
+<br>
 
 ---
 
@@ -86,6 +85,7 @@ This long rule alerts us when 25+ port connections are dropped and gives us a lo
 <br>
 <br>
 ![5.2](screenshots/5.22.png)
+<br>
 
 ---
 
