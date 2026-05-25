@@ -83,9 +83,14 @@ Now to confirm the rule works the way we intended by manually running the query:
 
 ![5.3](screenshots/5.3.png)
 ![5.3](screenshots/5.31.png)
+
+We see the list of ports column, and expanding to see all of the ports, we can see it's all of the common high-value attack vector ports (remote ports, lateral movement ports, database ports):
+![5.3](screenshots/5.34.png)
+
+Going back to the query output:
 ![5.3](screenshots/5.32.png)
 
-Looks like it works correctly with all of the columns we created! We can see that every single port of the 25 were dropped at the exact same time, with the FirstSeen and LastSeen both being May 22, 2026 7:10:19 AM. We also see that the source IP was internal: 10.0.1.50, which either tells us that we are dealing with an internal port scan for patching, or more worrisome, potentially an insider threat searching for an attack vector. We will keep this in mind going forward.
+It looks like all of the columns correctly outputted as intended! We can see that every single port of the 25 were dropped at the exact same time, with the FirstSeen and LastSeen both being May 22, 2026 7:10:19 AM. We also see that the source IP was internal: 10.0.1.50, which either tells us that we are dealing with an internal port scan for patching, or more worrisome, an insider threat indeed searching for an attack vector. We will keep this in mind going forward!
 
 ---
 
