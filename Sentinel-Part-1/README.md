@@ -72,7 +72,7 @@ CommonSecurityLog
 ```
 
 With this query we can see each reported firewall activity along with number of occurrences (in descending order) and unique source/destination IP addresses. We see that all of the alerts have only one associated source IP address, so we will keep that in mind:
-
+<br>
 ![1.3](screenshots/1.3.png)
 <br>
 In this query we can see all of the denied/blocked traffic:
@@ -195,6 +195,7 @@ union
 
 ![1.61](screenshots/1.61.png)
 <br>
+<br>
 This is a lot of valuable information, and we can see spikes at 4:15am, 4:34am, 4:39am, and 5:39am. Analyzing the logs of the first spike at 4:34am, we can see multiple indicators of compromise, including malicious powershell execution, lateral movement via smb, security tool tampering, etc.
 
 ---
@@ -205,6 +206,7 @@ This is a lot of valuable information, and we can see spikes at 4:15am, 4:34am, 
 ## 1.7): Writing detection rules
 
 Now we can write detection rules since we know the query and log structures:
+<br>
 
 ```kql
 CrowdStrikeAlerts
@@ -233,7 +235,8 @@ CrowdStrikeAlerts
 ```
 
 Here we are making a rule that gives us crowdstrike alerts on specific devices in the last 4 hours along with the severity of the alert (only critical and high will be added), the MITRE tactics associated (device only added to table if # of MITRE tactics on device is over 2), the names/number of alerts per device, and a hash ID of the device.
-
+<br>
+<br>
 When I entered the query, it returned no results in the last 4 hours, so just to see the table I changed it to last 24 hours:
 
 ![1.71](screenshots/1.71.png)
