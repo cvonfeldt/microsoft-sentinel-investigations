@@ -21,6 +21,7 @@ CommonSecurityLog
 Since port scanning connections are often dropped (drop, reset, deny) by palo alto, this query aggregates firewall logs to statistically define the "normal" number of unique destination ports targeted by blocked traffic, allowing us to establish a baseline threshold for identifying suspicious network scanning behavior.
 
 <br>
+<br>
 The last 24 hours showed no results, so I change the timeframe to the last 7 days, and got the results shown below:
 
 ![5.1](screenshots/5.1.png)
