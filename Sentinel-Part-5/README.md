@@ -1,6 +1,7 @@
 # Sentinel Part 5 - Palo Alto Firewall Port Scan Detection
 ## 5.1): Investigating Port Scanning Activity
 In this portion of the lab, we will investigate port scanning activity on palo alto firewall (MITRE T1046). Before diving into it, we will get a gauge on our port diversity with the query:
+<br>
 
 ```kusto
 CommonSecurityLog
@@ -18,14 +19,17 @@ CommonSecurityLog
     max_ports = max(DistinctPorts)
 ```
 <br>
+<br>
 Since port scanning connections are often dropped (drop, reset, deny) by palo alto, this query aggregates firewall logs to statistically define the "normal" number of unique destination ports targeted by blocked traffic, allowing us to establish a baseline threshold for identifying suspicious network scanning behavior.
 
 <br>
 <br>
 The last 24 hours showed no results, so I change the timeframe to the last 7 days, and got the results shown below:
+<br>
 
 ![5.1](screenshots/5.1.png)
 
+<br>
 <br>
 These results tell us that most of the dropped connections were only to 1 or 2 ports (up to 50% for 1 port that dropped connection, and up to 95% were 2 ports that dropped connections) - which happens frequently - but the 99th percentile have 25 dropped connections, which is a hallmark sign of port scanning.
 
@@ -75,9 +79,14 @@ CommonSecurityLog
     ReportId = tostring(hash_sha256(strcat(SourceIP, DestinationIP, tostring(DistinctPorts))))
 ```
 <br>
+<br>
 This long rule alerts us when 25+ port connections are dropped and gives us a lot of info regarding the dropped connections such as a list of the ports, number of denied scans, the time elapsed between the first and the last dropped port scanned, the ports scanned per minute, etc.
 <br>
+<br>
+<br>
 ![5.2](screenshots/5.21.png)
+<br>
+<br>
 <br>
 ![5.2](screenshots/5.22.png)
 
@@ -88,6 +97,7 @@ Now to confirm the rule works the way we intended by manually running the query:
 
 ![5.3](screenshots/5.3.png)
 <br>
+<br>
 ![5.3](screenshots/5.31.png)
 <br>
 <br>
@@ -96,11 +106,17 @@ We can see the portList column, and expanding to see all of the ports:
 <br>
 ![5.3](screenshots/5.33.png)
 <br>
+<br>
 We can see it's all of the common high-value attack vector ports (remote ports, lateral movement ports, database ports).
+<br>
+<br>
+<br>
 <br>
 Going back to the query output:
 <br>
+<br>
 ![5.3](screenshots/5.32.png)
+<br>
 <br>
 <br>
 
