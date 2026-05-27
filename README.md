@@ -12,3 +12,5 @@ Setting up and integrating the MDTI connector to correlate lab telemetry against
 
 ### [Part 3 - MITRE ATT&CK Coverage](Sentinel-Part-3/)
 Analyzing detection coverage across the MITRE ATT&CK framework using the Sentinel UI. Covers identifying covered and uncovered tactics, understanding the distinction between Sentinel analytics rules and Defender XDR custom detection rules, and building an original Defense Evasion detection rule targeting process masquerading (T1036).
+ 
+part 4
