@@ -1,8 +1,8 @@
 Part 4 - Real World SOC Attack Simulation & MITRE Mapping
 
-4.1): For this portion of the lab, I’m going to manually detect and map out the phases of the attack to their specific MITRE tactics. Since the MITRE grid didn’t output as intended, we weren’t able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to try to trace the attack phases without it and simulate a real-world SOC investigation as if we don’t have the perfectly-made rules already. 
+4.1): For this portion of the lab, I’m going to manually detect and map out the phases of the attack to their specific MITRE tactics. Since the MITRE grid didn’t output as intended, we weren’t able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to try to trace the attack phases without them and simulate a real-world SOC investigation as if we don’t have the perfectly-made rules already. 
 
-We will use the first deployed rule for the first stage only to give us a starting point.
+We will use the deployed rule for the first stage only to give us a starting point.
 
 Here we see the first stage of the attack: A phishing email that bypassed MailGuard SEG from IP: “198.51.100.42” with the payload: “report.exe”.
 (a1.0.png)
@@ -44,10 +44,6 @@ CrowdStrikeAlerts
 
 
 CrowdStrikeAlerts
-| search "198.51.100.42"
-
-
-CrowdStrikeAlerts
 | search "*pkwork-hr.com"
 
 
@@ -68,12 +64,14 @@ Looks like that did it! We can see the “Name” of the alerts is “malicious 
 We also get the golden nuggets of what we need to continue our trace: Mirage user’s infected host machine mentioned in AgentId: “win11a”, and that the payload was executed at 7:10:34 AM on May 22, 2026!
 
 
-4.3): Now that we know the device infected and the time of infection, we can narrow down our CrowdStrikeAlert query to analyze the malicious activities that followed: 
+4.3): Now that we know the device infected and the time of infection, we can narrow down our CrowdStrikeAlert query to analyze the malicious activities from the infected machine that followed: 
 (a3.0.png)
 
 So scrolling through the 14 results from the query of true positives on the infected machine, we see they all have the same exact time generated, so we won’t be able to simply chronologically map the attack sequence.
 
-On top of that, we unfortunately don’t see anything relating to commandline or child/parent process IDs, so we can’t find what the report.exe spawned exactly. We do see credential harvesting from LSASS though on the infected machine!:
+On top of that, we unfortunately don’t see anything relating to commandline or child/parent process IDs, so we can’t find what the report.exe spawned exactly. 
+
+We do see credential harvesting from LSASS though on the infected machine!:
 (sub.png)
 
 This is the next stage in our attack and these alerts maps to MITRE tactic 1003.001: “Extracting credentials from the Local Security Authority Subsystem Service (LSASS) process on Windows”
@@ -91,7 +89,7 @@ Of the given agentIDs/DisplayNames:
 
 We can see our lateral movement alert to win11d via smb! This was almost certainly achieved using the credentials harvested prior. This specifically maps to (T1021.002): “Adversaries may use Valid Accounts to interact with a remote network share using Server Message Block (SMB). The adversary may then perform actions as the logged-on user”
 
-4.5): Removing the win11a filter, we now that we know at least 7 machines have been infected: 
+4.5): Removing the win11a filter, we now that we see at least 7 machines have been infected: 
 (new.png)
 (new1.png)
 
@@ -107,25 +105,42 @@ Analyzing TimeGenerated, and SourceHostName, let’s see what hosts were involve
 
 We get only one source host: win11a, and we also get its IP: 10.0.1.50
 
-Now let’s try to identify traffic to “srvfile” - it clearly seems like a file server based on the name, so we know that if the movement shows up on Palo Alto, it would have the destination port 20, 21 (both FTP), 22 (SFTP), 139 (NetBIOS) or 445 (SMB), so let’s query that:
+A common tactic once attackers are into the target network, is to move to the file server to exfiltrate and/or encrypt important documents. 
+
+So let’s try to identify traffic to “srvfile” - it clearly seems like a file server based on the name, and we know it’s been infected and most likely had files encrypted (ransomware activity as seen above) so we know that if the movement shows up on Palo Alto, it would have the destination port 20, 21 (both FTP), 22 (SFTP), 139 (NetBIOS) or 445 (SMB), so let’s query that:
 
 (a4.2.png)
 
 We see that all of the logs with ports having to do with file transfer have the destinationIP: 
-10.0.1.200, so we can assume that is our fileserver IP address. There is something separate here that we notice that raises red flags: These 4 port connections all getting blocked/dropped seems indicative of a port scan:
+10.0.1.200, so it seems fairly likely that is our fileserver IP address. There is actually something separate here though that we notice that raises red flags: These 4 port connections all getting blocked/dropped seems indicative of a port scan:
 (a.4.3.png)
 
 Let’s remove the file-only port filter to see all ports that dropped connections:
 (a4.4.png)
 
-We can see all of these very commonly used ports’ connections being dropped at the same time, which has to be an automated scan. So we have our next documented stage of the attack: MITRE ATT&CK 1046: Network Service Discovery. This differs from 1595: Active Scanning, as 1046 “refers to Network Service Discovery (Discovery) used to map internal services once access has been established,” while 1595 is “scanning to find a way in” according to MITRE.org.
+We can see when the destination IP is 10.0.1.200 that the very commonly used ports’ connections are being dropped at the same time, which strongly points to a targeted automated scan. This also is a strong indicator that this is a file server (or another important device) that the attacker really wants access to. 
+
+The other destination IPs though almost seem random as well as their target ports, which seems more like a randomized optimistic scan, just hoping something random is vulnerable: 
+(4.10.png)
+
+Regardless, we have our next documented stage of the attack: MITRE ATT&CK 1046: Network Service Discovery. This differs from 1595: Active Scanning, as 1046 “refers to Network Service Discovery (Discovery) used to map internal services once access has been established,” while 1595 is “scanning to find a way in” according to MITRE.org.
 
 Whether this network scanning occurred before or after the lateral movement is difficult to say given we don’t have any time difference or process relationships. It’s equally as likely that report.exe executed a script automated these operations to occur simultaneously. 
 
-4.6): Pivoting back to potential lateral/outgoing beacon connection, it seems like we have gleaned about as much as we can out of the palo alto logs in regards to the movement from win11a to itws and srvfile. Unfortunately it also seems like we can’t get ThreatIntelIndicators logs from the time of the attack, as I connected to MDTI after the attack (had to make a new account):
+4.6): Pivoting back to potential lateral/outgoing beacon connection, it seems like we have gleaned about as much as we can out of the palo alto logs in regards to interior movement/scanning. Unfortunately it also seems like we can’t get ThreatIntelIndicators logs from the time of the attack, as I connected to MDTI after the attack (had to make a new account):
 (1.png)
 
-The natural next step to identifying the aftermath of the credential harvesting after physical network activity, would be Okta MFA logs to see if the harvested credentials were used in Okta logins.
+So now let’s look at successful movement to potential external IPs, since we know that encrypting has very likely occurred on the file server. An attacker’s next move would very likely be to send exfiltrated info/victim info (like an ID to identify victim’s network & where payment will potentially come from) to an attacker server. 
+
+Using “deviceCustomString1” which seems to tell us the means by which the data was delivered in the connection, we can see:
+(4.11.png)
+
+Throughout the whole list, there are many command and control connections (C2 beacon), as well as a single content-delivery-network connection that has a MASSIVE amount of outgoing bytes - all going to IP 192.0.2.100. They use port 443 most likely to blend in with trusted traffic. We can assume that 192.0.2.100 is the attacker C2 server, and that the CDN connection to it is the major data exfiltration connection we are looking for! 
+
+There is an exact MITRE tactic for this situation: (T1567) - Adversaries use existing, legitimate external web services (like CDNs) to exfiltrate data. 
+
+
+4.7): The natural next step to identifying the aftermath of the credential harvesting after physical network activity, would be Okta MFA logs to see if the harvested credentials were used in Okta logins.
 
 First we will view the table at the time of the attack:
 (2.png)
@@ -153,4 +168,3 @@ We will use DestinationPort (53 for DNS), TimeGenerated, SourceHostName:
 (a3.4.png)
 
 We see that of the DNS requests from the originally infected host, the only resolved DNS IP address that was external was DestinationTranslatedAddress:192.0.2.100, and that in “DeviceCustomString1” it says command-and-control (C2), so we have our C2 beacon IP! We also see our infected machine’s IP is SourceIP :10.0.1.50. 
-
