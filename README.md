@@ -235,7 +235,7 @@ This was almost certainly achieved using the credentials harvested prior. This s
 
 ## 4.5: Scope of Infection & Network Scanning
 
-### Removing the win11a filter, we now that we see at least 7 machines have been infected:
+#### Removing the win11a filter, we now that we see at least 7 machines have been infected:
 
 ![](screenshots/new.png)
 ![](screenshots/new1.png)
@@ -297,7 +297,7 @@ So now let's look at successful movement to potential external IPs, since we kno
 
 We know that any outgoing connection would require a DNS resolution first, to translate the IP to a domain name, so we can try filtering by port 53 first:
 
-### Here we have some valuable info: There are 4 connections out to IP=192.0.2.100, all with command-and-control (C2) descriptions. This is highly indicative of that IP indeed being the C2 beacon, but there may be multiple…
+#### Here we have some valuable info: There are 4 connections out to IP=192.0.2.100, all with command-and-control (C2) descriptions. This is highly indicative of that IP indeed being the C2 beacon, but there may be multiple…
 
 Keeping "deviceCustomString1" (which seems to tell us the means by which the data was delivered in the connection), "Activity == end" to confirm it was a successful connection, and switching to see all Dest ports, we can see:
 
