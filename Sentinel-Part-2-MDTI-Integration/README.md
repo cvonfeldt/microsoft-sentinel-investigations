@@ -1,5 +1,7 @@
 # Sentinel Part 2 - Microsoft Defender Threat Intelligence (MDTI) Integration 
 
+<br>
+
 ## 2.1): Setting up MDTI Connector
 
 To start part 2, we are going to download the MDTI connector (Microsoft defender threat intelligence). With this we can correlate and run our logs against the global MIcrosoft-professional derived indicators of compromise. It’s a great (semi) built-in tool to add protection and awareness to our SIEM and network. 
