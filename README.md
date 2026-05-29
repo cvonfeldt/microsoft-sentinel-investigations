@@ -113,7 +113,7 @@
 
 ## 4.1: Identifying the Initial Payload
 
-We will use the deployed rule for *only* the first stage only to give us a starting point.
+#### We will use the deployed rule for *only* the first stage only to give us a starting point.
 
 Here we see the first stage of the attack: A phishing email that bypassed MailGuard SEG from IP: "198.51.100.42" with the payload: "report.exe".
 
@@ -141,7 +141,9 @@ We see that SPF, DKIM, and DMARC all fail, which makes me wonder why MailGuard l
 
 ## 4.2: Execution of Malicious File (Initial Compromise)
 
-Now to find the next stage of the attack, we know that we are working with an endpoint device that was sent a malicious payload, so we know we'll need to query a CrowdStrike table (the EDR vendor in this environment). Since we have worked with the CrowdStrikeAlert table so far, we will query it to see if its columns/data includes a user so we can correlate with the hostname and the rest of the attack:
+#### Now to find the next stage of the attack, we know that we are working with an endpoint device that was sent a malicious payload, so we know we'll need to query a CrowdStrike table (the EDR vendor in this environment). 
+
+Since we have worked with the CrowdStrikeAlert table so far, we will query it to see if its columns/data includes a user so we can correlate with the hostname and the rest of the attack:
 
 ![](screenshots/a2.1.png)
 
@@ -184,7 +186,7 @@ We also get the golden nuggets of what we need to continue our trace: Mirage use
 
 ## 4.3: Credential Dumping
 
-Now that we know the device infected and the time of infection, we can narrow down our CrowdStrikeAlert query to analyze the malicious activities from the infected machine that followed:
+#### Now that we know the device infected and the time of infection, we can narrow down our CrowdStrikeAlert query to analyze the malicious activities from the infected machine that followed:
 
 ![](screenshots/a3.0.png)
 
@@ -204,7 +206,9 @@ These are both true_positives and will very likely be a major attack vector goin
 
 ## 4.4: Lateral Movement via SMB
 
-Looking over the CrowdStrike logs, I'm realizing that I was treating the "AgentID" column as the sourceIP, thinking that it would have to be win11a to infect the other hosts, when in reality AgentID is simply the endpoint device associated with the alert. This makes a lot more sense considering CrowdStrike is our EDR tool and not one that monitors network/transmission. With that in mind…
+#### Looking over the CrowdStrike logs, I'm realizing that I was treating the "AgentID" column as the sourceIP, thinking that it would have to be win11a to infect the other hosts, when in reality AgentID is simply the endpoint device associated with the alert. 
+
+This makes a lot more sense considering CrowdStrike is our EDR tool and not one that monitors network/transmission. With that in mind…
 
 We see something glaring when searching other endpoint devices after the initial compromise: There appears to be lateral movement:
 
@@ -220,7 +224,7 @@ We can see our lateral movement alert to win11d via smb! This was almost certain
 
 ## 4.5: Scope of Infection & Network Scanning
 
-Removing the win11a filter, we now that we see at least 7 machines have been infected:
+#### Removing the win11a filter, we now that we see at least 7 machines have been infected:
 
 ![](screenshots/new.png)
 ![](screenshots/new1.png)
@@ -269,7 +273,9 @@ Whether this network scanning occurred before or after the lateral movement is d
 
 ## 4.6: C2 Beacons & Data Exfiltration
 
-Pivoting back to potential lateral/outgoing beacon connection, it seems like we have gleaned about as much as we can out of the palo alto logs in regards to interior movement/scanning. Unfortunately it also seems like we can't get ThreatIntelIndicators logs from the time of the attack, as I connected to MDTI after the attack (had to make a new account):
+#### Pivoting back to potential lateral/outgoing beacon connection, it seems like we have gleaned about as much as we can out of the palo alto logs in regards to interior movement/scanning. 
+
+Unfortunately it also seems like we can't get ThreatIntelIndicators logs from the time of the attack, as I connected to MDTI after the attack (had to make a new account):
 
 ![](screenshots/1.png)
 
@@ -303,7 +309,9 @@ Also, in reference to the multiple C2 channels, that would map to **T1008**: "De
 
 ## 4.7: Persistence Detection
 
-I know that attackers love to create persistence early before making too much noise on the victim network. At this point with confirmed credentials harvested, lateral movements, data exfiltration, and a clear C2 beacon connection, you'd certainly think they would've created a backdoor by now. Shifting our focus to only the nature of the alerts, it seems like CrowdStrike gives us more info regarding the nature of the actual event itself. We remember from 4.2 that crowdstrike includes "objective" that explains the purpose of the connection initiated, so let's check that (but still making sure the alerts are after the initial compromise):
+#### I know that attackers love to create persistence early before making too much noise on the victim network. 
+
+At this point with confirmed credentials harvested, lateral movements, data exfiltration, and a clear C2 beacon connection, you'd certainly think they would've created a backdoor by now. Shifting our focus to only the nature of the alerts, it seems like CrowdStrike gives us more info regarding the nature of the actual event itself. We remember from 4.2 that crowdstrike includes "objective" that explains the purpose of the connection initiated, so let's check that (but still making sure the alerts are after the initial compromise):
 
 ![](screenshots/a3.1.png)
 
@@ -313,7 +321,7 @@ Looking at the objectives of the alerts, we see "Maintain Presence," In the aler
 
 ## 4.8: Okta MFA Compromise
 
-It would make sense to check the Okta MFA logs to see if any backdoor persistence activity like creating new users/changing MFA rules has occurred, or if the harvested credentials were to login to existing accounts in Okta logins.
+#### It would make sense to check the Okta MFA logs to see if any backdoor persistence activity like creating new users/changing MFA rules has occurred, or if the harvested credentials were to login to existing accounts in Okta logins.
 
 First we will view the table at the time of the attack:
 
@@ -339,7 +347,7 @@ We can certainly conclude that the privilege escalation indeed came from credent
 
 ## 4.9: Okta Backdoor Creation
 
-As for backdoor creation, when adding the column "OriginalTarget" to our query:
+#### As for backdoor creation, when adding the column "OriginalTarget" to our query:
 
 ![](screenshots/4.12.png)
 
@@ -353,7 +361,7 @@ Since we established in 4.7 that there appear to be no windows AD accounts creat
 
 ## 4.10: AWS Cloud Intrusion
 
-We know that cloud service used in this network is AWS cloud trail, and I'm sure the attacker(s) wreaked havoc on the cloud once they gained access and higher privileges. We will take a look but first will get familiar with the AWSCloudTrail table:
+#### We know that cloud service used in this network is AWS cloud trail, and I'm sure the attacker(s) wreaked havoc on the cloud once they gained access and higher privileges. We will take a look but first will get familiar with the AWSCloudTrail table:
 
 ![](screenshots/4.15.png)
 
@@ -433,7 +441,9 @@ A few more secondary events logged from attacker activity not mentioned above: L
 
 ## 4.11: GCP Cloud Intrusion
 
-Doing a sweep of all of the tables, I realized that I totally missed one of the cloud platform tables! Because it's an acronym and there are only 25 total logs in it, I had skipped over it before, but we have yet to analyze GCP (Google cloud platform) logs, so let's do that now!
+#### Doing a sweep of all of the tables, I realized that I totally missed one of the cloud platform tables! 
+
+Because it's an acronym and there are only 25 total logs in it, I had skipped over it before, but we have yet to analyze GCP (Google cloud platform) logs, so let's do that now!
 
 Getting familiar with the table, it looks pretty similar to AWS in terms of the columns and functions of the cloud platform:
 
@@ -541,7 +551,7 @@ This essentially allows deploy-pipeline to generate access tokens, impersonate C
 
 ## 4.12: AWS CloudTrail/Google Cloud Platform MITRE Mapping
 
-There was a lot of malicious activity that occurred in 4.10 and 4.11 to map to MITRE:
+#### There was a lot of malicious activity that occurred in 4.10 and 4.11 to map to MITRE:
 
 The first would be the creation of the backdoor-svc account in the first place (in both GCP and AWS) which maps to **T1136.003**: "Adversaries create secondary accounts within cloud or SaaS environments (like AWS, Azure AD, or Google Workspace) to maintain persistent access to a compromised system without needing to install obvious malware or backdoors."
 
@@ -567,7 +577,7 @@ The last one is the big one - the exfiltration of the sensitive files/buckets (G
 
 ## 4.13: Tying It All Together
 
-Tying everything together, there were a few logs from earlier parts that didn't exactly receive an explanation at the time, but I wanted to complete the lab and see if I got answers, and for most of them I did!
+#### Tying everything together, there were a few logs from earlier parts that didn't exactly receive an explanation at the time, but I wanted to complete the lab and see if I got answers, and for most of them I did!
 
 For the IP addresses acting as backup beacons from part 4.6 (198.51.100.42 and 203.0.113.77), we said we would keep an eye out for them, and we saw both of them in the Cloud Trail activity. Turns out 198.51.100.42 was the attacker's machine that the attack was running from, as it was the IP running mirage in Cloud Trail (as seen in screenshots in 4.11). As for 203.0.113.77 appeared to be a secondary attacker machine, as it was the IP running the backup-svc backdoor account in Cloud Trail:
 
