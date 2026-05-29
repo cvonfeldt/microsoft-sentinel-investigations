@@ -182,7 +182,7 @@ On top of that, we know that the time of the email was 7:08:40 AM on May 22nd, a
 ![](screenshots/a2.15.png)
 ![](screenshots/a2.16.png)
 
-### Looks like that did it! We can see the "Name" of the alerts is "malicious powershell execution", and the attacker's objective is "gain access," which lines up perfectly with what presumably occurred in the initial compromise of running report.exe. 
+#### Looks like that did it! We can see the "Name" of the alerts is "malicious powershell execution", and the attacker's objective is "gain access," which lines up perfectly with what presumably occurred in the initial compromise of running report.exe. 
 
 This maps cleanly to MITRE technique **T1204.002**: User Execution: Malicious File.
 
