@@ -1,4 +1,5 @@
 # Sentinel Part 5 - Automation Rules and Incident Enrichment
+<br>
 
 ## 5.1): Selecting Alerts for Incident Enrichment
 
@@ -11,6 +12,7 @@ Suspicious AWS CLI Command Execution
 ![4.1](screenshots/4.1.png)
 
 ---
+<br>
 
 ## 5.2): Creating an AWS Alert Enrichment Rule
 
@@ -19,6 +21,7 @@ Here we can see our first rule created regarding AWS, which basically takes any 
 ![4.2](screenshots/4.2.png)
 
 ---
+<br>
 
 ## 5.3): Enhancing Security Log Clearing Alerts
 
@@ -30,6 +33,7 @@ Now for the security log clearing enhancement:
 This rule adds tags “defense-evasion” and “log-tampering,” and changes the severity of the alert to high (highest out of the 4).
 
 ---
+<br>
 
 ## 5.4): Understanding Rule Priority and AND Conditions
 
@@ -40,12 +44,14 @@ Seeing both of our created rules, we know that they go in priority order, and we
 This means that all conditions must be met in the rule for it to be executed, as opposed to “OR” where only one condition needs to be met. Although this doesn’t apply here since we made only one condition per rule, it’s good to know what it is for future rules made with more than 1 condition. 
 
 ---
+<br>
 
 ## 5.5): Waiting for Triggered Incidents
 
 We don’t see any incidents yet with AWS or security log clearing, but once we do and see the enhanced changes, I’ll come back and upload a screenshot!
 
 ---
+<br>
 
 ## 5.6): Exploring Advanced Automation Rule Use Cases
 
@@ -61,6 +67,7 @@ We see how automation rules can get much more advanced with scenarios such as:
 This lab has us sticking to tag-based automation for now, but we can see above, especially with the “run playbook” option, how sentinel can be used for SOAR operations.
 
 ---
+<br>
 
 ## Key Skills Demonstrated
 
