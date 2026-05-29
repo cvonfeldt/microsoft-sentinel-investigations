@@ -15,40 +15,91 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 
 
-# Part 4 – MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline)
+# Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline)
 
-This table maps each stage of the attack to MITRE ATT&CK techniques in the exact order they occurred in the investigation.
+# MITRE ATT&CK Mapping - PKWork Incident (In Order of Attack Progression)
 
 ---
 
-## MITRE ATT&CK Mapping Table (Chronological Order)
+## Phase 1 - Initial Access
 
-| Step | Phase | MITRE Technique ID | Technique Name | Description (Aligned to Report) |
-|------|------|-------------------|----------------|---------------------------------|
-| 1 | Initial Access | T1566.001 | Spearphishing Attachment | Malicious email delivered with attachment (`report.exe`) used to initiate compromise. |
-| 2 | Initial Access | T1566.002 | Spearphishing Link | Email also leveraged spoofed links/domain impersonation to deliver payload. |
-| 3 | Execution | T1204.002 | User Execution: Malicious File | User executed `report.exe`, triggering the initial infection on endpoint (win11a). |
-| 4 | Credential Access | T1003.001 | OS Credential Dumping: LSASS Memory | LSASS dumping used to harvest credentials from memory on infected endpoints. |
-| 5 | Lateral Movement | T1021.002 | SMB/Windows Admin Shares | Attackers used harvested credentials to move laterally via SMB between hosts. |
-| 6 | Discovery | T1046 | Network Service Discovery | Network-wide scanning of services and internal systems after foothold established. |
-| 7 | Command & Control / Exfil Prep | T1567 | Exfiltration Over Web Services | Data sent to external attacker-controlled infrastructure using web/CDN-style channels. |
-| 8 | Command & Control | T1048 | Exfiltration Over Alternative Protocol | Secondary C2 traffic observed using non-primary channels (DNS/HTTPS mix). |
-| 9 | Command & Control Resilience | T1008 | Fallback C2 Channels | Multiple C2 channels used for redundancy if primary beacon is blocked. |
-| 10 | Identity Compromise | T1556.006 | MFA Abuse / Authentication Bypass | Okta MFA factors disabled/reset/enrolled to bypass authentication protections. |
-| 11 | Persistence (Cloud Identity) | T1136.003 | Create Cloud Account / API Token Abuse | Creation of API tokens/backdoor cloud identities for persistent access. |
-| 12 | Cloud Privilege Manipulation (AWS) | T1098 | Account Manipulation | AWS IAM accounts modified/escalated to maintain privileged access. |
-| 13 | Cloud Infrastructure Discovery | T1580 | Cloud Infrastructure Discovery | Attackers enumerated VMs, users, roles, and cloud architecture across AWS/GCP. |
-| 14 | Defense Evasion (Cloud Network Exposure) | T1562.007 | Disable or Modify Cloud Firewall Rules | Security groups/firewall rules opened to 0.0.0.0/0 allowing unrestricted access. |
-| 15 | Resource Hijacking | T1496.001 | Resource Hijacking (Cryptomining) | High-performance GPU instances deployed for cryptomining/resource abuse. |
-| 16 | Defense Evasion | T1562.008 | Disable or Modify Cloud Logging | CloudTrail/GCP logging and SIEM forwarding disabled or altered to hide activity. |
-| 17 | Execution (Cloud Command Abuse) | T1059.004 | Command and Scripting Interpreter (Shell) | Malicious bash execution via injected startup/user-data scripts. |
-| 18 | Command Execution / Tool Transfer | T1105 | Ingress Tool Transfer | Remote script downloaded from attacker server and executed in environment. |
-| 19 | Defense Evasion | T1027 | Obfuscated Files or Information | Base64 encoding used to hide malicious startup script payload. |
-| 20 | Persistence | T1546 | Event-Triggered Execution | Instance startup/user-data used to ensure script execution persistence. |
-| 21 | Cloud Execution Abuse (CI/CD) | T1072 | Software Deployment Tools Abuse | CI/CD pipeline abused to deploy malicious artifacts and modify infrastructure. |
-| 22 | Exfiltration | T1530 | Data from Cloud Storage | Sensitive files (API keys, HR data, financial records) exfiltrated from cloud storage. |
-| 23 | File Staging (Pre-Exfiltration) | T1074.001 | Data Staged for Exfiltration | Attackers aggregated sensitive files (keys, HR data, finance exports) before exfiltration. |
-| 24 | Ransomware / Impact | T1486 | Data Encrypted for Impact | Endpoint behavior consistent with ransomware activity and potential file encryption on dev systems. |
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 1 | T1566.001 | Spearphishing Attachment | report.exe delivered via email to mirage@pkwork.onmicrosoft.com from spoofed pkwork-hr.com - SPF, DKIM, and DMARC all failed |
+| 2 | T1566.002 | Spearphishing Link | Email also contained a malicious link alongside the attachment payload |
+
+---
+
+## Phase 2 - Execution
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 3 | T1204.002 | User Execution: Malicious File | report.exe executed on win11a at 7:10:34 AM; CrowdStrike alert fired with objective "gain access" |
+
+---
+
+## Phase 3 - Credential Access
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 4 | T1003.001 | OS Credential Dumping: LSASS Memory | LSASS credential dumping confirmed true_positive on win11a, srv-file01, and it-ws01 immediately post-execution - domain credentials harvested to enable lateral movement |
+
+---
+
+## Phase 4 - Lateral Movement & Discovery
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 5 | T1021.002 | SMB/Windows Admin Shares | Harvested credentials used to move laterally via SMB; automated spread to win11b, win11c, win11d, srv-file01, srv-dc, it-ws01, and dev-ws01 - all hit in simultaneous wave at 7:10:34 AM |
+| 6 | T1046 | Network Service Discovery | Full /24 subnet sweep from win11a (10.0.1.50) - ~254 hosts probed on randomized sequential ports to evade per-host detection thresholds; concurrent with lateral movement |
+
+---
+
+## Phase 5 - Impact & Collection (On-Premises)
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 7 | T1486 | Data Encrypted for Impact | Ransomware behavior confirmed on dev-ws01 following security tool tamper attempt - encryption occurs on endpoints before data is beaconed out |
+| 8 | T1074.001 | Local Data Staging | Sensitive files aggregated on it-ws01 (4 staging alerts) and win11b before exfiltration - consistent with collection hop pulling files from srv-file01 via SMB |
+
+---
+
+## Phase 6 - C2 & Exfiltration (On-Premises)
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 9 | T1567 | Exfiltration Over Web Services | Large-volume outbound transfer from win11a to 192.0.2.100 over HTTPS port 443 - CDN-style channel used to blend with trusted traffic |
+| 10 | T1048 | Exfiltration Over Alternative Protocol | Secondary exfil/C2 channel to 192.0.2.100 over DNS port 53 - confirmed by Palo Alto C2 categorization |
+| 11 | T1008 | Fallback Channels | Three attacker-controlled IPs used for redundant C2: 192.0.2.100 (primary C2 server), 198.51.100.42 (attacker's working machine), 203.0.113.77 (backdoor-svc operations) - confirmed by cross-referencing Palo Alto against CloudTrail |
+
+---
+
+## Phase 7 - Identity Compromise (Okta)
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 12 | T1556.006 | Modify Authentication Process: MFA Policies | MFA factors reset for CEO and others, SMS factor deactivated for Priya Sharma, new TOTP enrolled on attacker-controlled device - 6 accounts compromised; simultaneous logins from geographically impossible locations confirm automation |
+| 13 | T1136.003 | Create Account: Cloud Account | Backdoor API token created in Okta by mirage after super admin escalation - bypasses login flow entirely and persists after password changes; also covers backdoor-svc in AWS and backdoor-svc-gcp in GCP |
+
+---
+
+## Phase 8 & 9 - AWS Cloud & GCP Cloud Intrusion
+
+| # | Technique ID | Name | Description |
+|---|---|---|---|
+| 14 | T1580 | Cloud Infrastructure Discovery | ListUsers, ListGroups, ListRoles, ListAccessKeys, DescribeVpcs, DescribeSubnets, DescribeSecurityGroups, DescribeNetworkInterfaces - full AWS environment and network topology mapped |
+| 15 | T1098 | Account Manipulation | backdoor-svc created with admin privileges; login profile set with no required password reset - also covers GCP backdoor-svc-gcp owner role grant and deploy-pipeline privilege escalation |
+| 16 | T1562.007 | Impair Defenses: Disable or Modify Cloud Firewall | AWS security group sg-0a1b2c3d4e5f67890 opened to 0.0.0.0/0 on all ports; GCP firewall rule allow-all-ingress created with identical scope - both cloud environments fully exposed |
+| 17 | T1496.001 | Resource Hijacking: Compute Hijacking | 5x p3.16xlarge GPU instances in AWS and 3x a2-highgpu-8g instances in GCP (crypto-miner-01/02/03) launched for cryptocurrency mining |
+| 18 | T1027 | Obfuscated Files or Information | EC2 userData payload Base64-encoded to conceal the malicious curl command from casual inspection |
+| 19 | T1059.004 | Command and Scripting Interpreter: Unix Shell | Decoded userData = bash script curling shell.sh from attacker-controlled server at 185.220.101.55 - executes on every instance boot |
+| 20 | T1105 | Ingress Tool Transfer | shell.sh pulled from 185.220.101.55 at boot - hosted externally and updatable by the attacker at any time without re-accessing the AWS environment |
+| 21 | T1546 | Event Triggered Execution | userData script fires automatically on every EC2 instance boot - persistence that survives credential rotation and IAM changes entirely |
+| 22 | T1562.008 | Impair Defenses: Disable or Modify Cloud Logs | AWS: StopLogging then DeleteTrail on management-events-trail. GCP: deleted export-all-logs sink (kills SIEM forwarding) then disabled _Default sink (kills local logging) - more thorough in GCP than AWS |
+| 23 | T1530 | Data from Cloud Storage | AWS: api-keys-production.json, hr/employee-records-full.csv, finance/2026-budget-final.xlsx pulled from S3. GCP: financial-report-2026.xlsx, employee-pii-export.csv, api-keys-production.json pulled from pocaas-confidential-data |
+| 24 | T1072 | Software Deployment Tools | deploy-pipeline account granted serviceAccountTokenCreator by mirage - CI/CD pipeline weaponized; deploy-pipeline uploads app.jar to deployment bucket and redeploys web-frontend-01 |
+
+---
  
 Part 4 - Real World SOC Attack Simulation & MITRE Mapping
 
