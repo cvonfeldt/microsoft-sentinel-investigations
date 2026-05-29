@@ -643,13 +643,55 @@ For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention 
 <br>
 
 ## 4.14: Conclusion
-#### This was a multi-stage attack from an attacker infrastructure/network based in Moscow, whose initial attack vector began with a phishing email link to mirage's workstation: "win11a". The initial payload, "report.exe" was executed on that work station and havoc immediately ensued. The executable ran a script that spawned a number of sophisticated automated attacks all at the same time. These attacks included credential harvesting, lateral movement to many other hosts, file staging, encryption of (presumably) source code on a developer workstation, local network data exfiltration through C2 beacon channels, MFA manipulation and account takeover in Okta, backdoor users created in Okta and cloud platforms, cloud IAM rules manipulated in both privilege escalation and user creation, cloud compute resources harvested with expensive cryptomining instances, exfiltration of sensitive cloud files, injection of obfuscated commands (to reach out to attacker server) in previously made cloud instances, API keys stolen in Okta and GCP, and other malicious activity.
+#### This was a multi-stage attack from an attacker infrastructure/network based in Moscow, whose initial attack vector was a phishing email link to mirage's workstation: "win11a". The initial payload, "report.exe" was executed on that work station and havoc immediately ensued. The executable ran a script that spawned a number of sophisticated automated attacks all at the same time. These attacks included credential harvesting, lateral movement to many other hosts, file staging, encryption of (presumably) source code on a developer workstation, local network data exfiltration through C2 beacon channels, MFA manipulation and account takeover in Okta, backdoor users created in Okta and cloud platforms, cloud IAM rules manipulated in both privilege escalation and user creation, cloud compute resources harvested with expensive cryptomining instances, exfiltration of sensitive cloud files, injection of obfuscated commands (to reach out to attacker server) in previously made cloud instances, API keys stolen in Okta and GCP, and other malicious activity.
 
 #### The attack mimicked many real world techniques/processes as well as network (both attacker's and victim's) infrastructure. Real world scenarios for such an attack would most likely occur on a larger scale, but many of the principle ideas seemed to be highly transferable to typical blue team SOC work/experience!
 
 ---
+<br>
+<br>
+
+## Key Skills Demonstrated
+##### * Threat Hunting & Incident Investigation
+##### * Multi-Stage Attack Chain Analysis
+##### * MITRE ATT&CK Framework Mapping
+##### * Detection Engineering
+##### * Kusto Query Language (KQL)
+##### * Microsoft Sentinel SIEM Operations
+##### * CrowdStrike EDR Investigation
+##### * Palo Alto Firewall Log Analysis
+##### * Okta Identity & MFA Security Analysis
+##### * AWS CloudTrail Investigation
+##### * Google Cloud Platform (GCP) Security Monitoring
+##### * Cloud IAM & Privilege Escalation Analysis
+##### * Cloud Persistence & Backdoor Detection
+##### * Command-and-Control (C2) Detection
+##### * Data Exfiltration Analysis
+##### * Network Service Discovery Detection
+##### * Lateral Movement Investigation (SMB)
+##### * Credential Dumping Detection (LSASS)
+##### * Phishing & Initial Access Analysis
+##### * SIEM Log Correlation Across Multiple Data Sources
+##### * Threat Intelligence Correlation
+##### * Security Operations Center (SOC) Methodology
+##### * Malware Execution & Persistence Analysis
+##### * Firewall & Network Traffic Investigation
+##### * Cloud Logging & Defense Evasion Detection
+##### * CI/CD Pipeline Abuse Detection
+##### * Cryptomining & Resource Hijacking Detection
+##### * Identity Compromise & MFA Manipulation Analysis
+##### * Security Event Timeline Reconstruction
+##### * Cross-Platform Security Monitoring
+##### * Endpoint, Identity, Network, and Cloud Telemetry Correlation
 
 
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## Other Parts of Lab:
 
