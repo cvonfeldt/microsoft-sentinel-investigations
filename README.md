@@ -141,6 +141,7 @@ Clicking into the query that actually fired the alert, we see some more specific
 We see that SPF, DKIM, and DMARC all fail, which makes me wonder why MailGuard let the email through. We also see that the sender's domain "pkwork-hr.com" is spoofed, as the real one would have "onmicrosoft.com" in it.
 
 ---
+<br>
 
 ## 4.2: Execution of Malicious File (Initial Compromise)
 
