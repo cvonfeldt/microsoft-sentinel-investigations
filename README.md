@@ -693,6 +693,8 @@ For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention 
 <br>
 <br>
 
+--- 
+
 ## Other Parts of Lab:
 
 ### [Part 1 - Exploration](Sentinel-Part-1/)
