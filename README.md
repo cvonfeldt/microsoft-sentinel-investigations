@@ -10,9 +10,7 @@
 
 # Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
 
-<br>
-
-# Overview & Methodology:
+## Overview & Methodology:
 
 ### The main investigation ("part 4" documented in this README) was 100% self-guided and not included in the original lab. I chose to add this part myself to perform a full end-to-end manual investigation using my own queries and reasoning *without* the lab's supplied deployed rules. I only compared the list of deployed rules upon completion of my self-guided mapped out attack. My reasoning for this was:
 - #### 1). I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner, and
