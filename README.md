@@ -1,23 +1,16 @@
 # SOC Investigation & Detection Engineering with Microsoft Sentinel and KQL
 
-Explaining my walkthroughs and thought processes in Microsoft Sentinel SOC investigations using KQL across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs. Includes KQL detection rules, threat hunting queries, and MITRE ATT&CK mapping.
+## Explaining my walkthroughs and thought processes in Microsoft Sentinel SOC investigations using KQL across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs. Includes KQL detection rules, threat hunting queries, and MITRE ATT&CK mapping. 
+## Parts done in order and can be found in directories above (or after "part 4" documentation below). 
 
-## Parts
+## The main investigation ("part 4" documented in this README) was a part not included in the original lab - there were supplied custom deployed rules that mapped out the attack exactly, but I wanted to perform a full end-to-end manual investigation using my own queries and reasoning *without* the deployed rules. I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner. 
 
-### [Part 1 - Exploration](Sentinel-Part-1/)
-Initial data exploration across multiple enterprise security data sources using Advanced Hunting and KQL. Covers threat hunting across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs, cross-source correlation of suspicious activity, and building a custom multi-tactic detection rule from scratch.
-
-### [Part 2 - Microsoft Defender Threat Intelligence (MDTI) Integration](Sentinel-Part-2/)
-Setting up and integrating the MDTI connector to correlate lab telemetry against Microsoft's global threat intelligence feed. Covers IOC correlation using STIX-formatted indicators, joining threat intel against firewall and cloud logs, and understanding the ThreatIntelIndicators table schema.
-
-### [Part 3 - MITRE ATT&CK Coverage](Sentinel-Part-3/)
-Analyzing detection coverage across the MITRE ATT&CK framework using the Sentinel UI. Covers identifying covered and uncovered tactics, understanding the distinction between Sentinel analytics rules and Defender XDR custom detection rules, and building an original Defense Evasion detection rule targeting process masquerading (T1036).
+### This ended up being a fantastic excercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of working with a wide variety of ingested logs and information, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). 
 
 
+# Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
 
-# Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline)
-
-# MITRE ATT&CK Mapping - PKWork Incident (In Order of Attack Progression)
+## MITRE ATT&CK Mapping - PKWork Incident (In Order of Attack Progression). 
 
 ---
 
@@ -25,8 +18,8 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 1 | T1566.001 | Spearphishing Attachment | report.exe delivered via email to mirage@pkwork.onmicrosoft.com from spoofed pkwork-hr.com - SPF, DKIM, and DMARC all failed |
-| 2 | T1566.002 | Spearphishing Link | Email also contained a malicious link alongside the attachment payload |
+| 1 | **T1566.001** | Spearphishing Attachment | report.exe delivered via email to mirage@pkwork.onmicrosoft.com from spoofed pkwork-hr.com - SPF, DKIM, and DMARC all failed |
+| 2 | **T1566.002** | Spearphishing Link | report.exe was technically a hyperlink clicked on |
 
 ---
 
@@ -34,7 +27,7 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 3 | T1204.002 | User Execution: Malicious File | report.exe executed on win11a at 7:10:34 AM; CrowdStrike alert fired with objective "gain access" |
+| 3 | **T1204.002** | User Execution: Malicious File | report.exe executed on win11a at 7:10:34 AM; CrowdStrike alert fired with objective "gain access" |
 
 ---
 
@@ -42,7 +35,7 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 4 | T1003.001 | OS Credential Dumping: LSASS Memory | LSASS credential dumping confirmed true_positive on win11a, srv-file01, and it-ws01 immediately post-execution - domain credentials harvested to enable lateral movement |
+| 4 | **T1003.001** | OS Credential Dumping: LSASS Memory | LSASS credential dumping confirmed true_positive on win11a, srv-file01, and it-ws01 immediately post-execution - domain credentials harvested to enable lateral movement |
 
 ---
 
@@ -50,8 +43,8 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 5 | T1021.002 | SMB/Windows Admin Shares | Harvested credentials used to move laterally via SMB; automated spread to win11b, win11c, win11d, srv-file01, srv-dc, it-ws01, and dev-ws01 - all hit in simultaneous wave at 7:10:34 AM |
-| 6 | T1046 | Network Service Discovery | Full /24 subnet sweep from win11a (10.0.1.50) - ~254 hosts probed on randomized sequential ports to evade per-host detection thresholds; concurrent with lateral movement |
+| 5 | **T1021.002** | SMB/Windows Admin Shares | Harvested credentials used to move laterally via SMB; automated spread to win11b, win11c, win11d, srv-file01, srv-dc, it-ws01, and dev-ws01 - all hit in simultaneous wave at 7:10:34 AM |
+| 6 | **T1046** | Network Service Discovery | Full /24 subnet sweep from win11a (10.0.1.50) - ~250 hosts probed on randomized sequential ports to evade per-host detection thresholds; concurrent with lateral movement |
 
 ---
 
@@ -59,8 +52,8 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 7 | T1486 | Data Encrypted for Impact | Ransomware behavior confirmed on dev-ws01 following security tool tamper attempt - encryption occurs on endpoints before data is beaconed out |
-| 8 | T1074.001 | Local Data Staging | Sensitive files aggregated on it-ws01 (4 staging alerts) and win11b before exfiltration - consistent with collection hop pulling files from srv-file01 via SMB |
+| 7 | **T1486** | Data Encrypted for Impact | Ransomware behavior confirmed on dev-ws01 following security tool tamper attempt - encryption occurs on endpoints before data is beaconed out |
+| 8 | **T1074.001** | Local Data Staging | Sensitive files aggregated on it-ws01 (4 staging alerts) and win11b before exfiltration - consistent with collection hop pulling files from srv-file01 via SMB |
 
 ---
 
@@ -68,9 +61,9 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 9 | T1567 | Exfiltration Over Web Services | Large-volume outbound transfer from win11a to 192.0.2.100 over HTTPS port 443 - CDN-style channel used to blend with trusted traffic |
-| 10 | T1048 | Exfiltration Over Alternative Protocol | Secondary exfil/C2 channel to 192.0.2.100 over DNS port 53 - confirmed by Palo Alto C2 categorization |
-| 11 | T1008 | Fallback Channels | Three attacker-controlled IPs used for redundant C2: 192.0.2.100 (primary C2 server), 198.51.100.42 (attacker's working machine), 203.0.113.77 (backdoor-svc operations) - confirmed by cross-referencing Palo Alto against CloudTrail |
+| 9 | **T1567** | Exfiltration Over Web Services | Large-volume outbound transfer from win11a to 192.0.2.100 over HTTPS port 443 - CDN-style channel used to blend with trusted traffic |
+| 10 | **T1048** | Exfiltration Over Alternative Protocol | Secondary exfil/C2 channel to 192.0.2.100 over DNS port 53 - confirmed by Palo Alto C2 categorization |
+| 11 | **T1008** | Fallback Channels | Three attacker-controlled IPs used for redundant C2: 192.0.2.100 (primary C2 server), 198.51.100.42 (attacker's working machine), 203.0.113.77 (backdoor-svc operations) - confirmed by cross-referencing Palo Alto against CloudTrail |
 
 ---
 
@@ -78,8 +71,8 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 12 | T1556.006 | Modify Authentication Process: MFA Policies | MFA factors reset for CEO and others, SMS factor deactivated for Priya Sharma, new TOTP enrolled on attacker-controlled device - 6 accounts compromised; simultaneous logins from geographically impossible locations confirm automation |
-| 13 | T1136.003 | Create Account: Cloud Account | Backdoor API token created in Okta by mirage after super admin escalation - bypasses login flow entirely and persists after password changes; also covers backdoor-svc in AWS and backdoor-svc-gcp in GCP |
+| 12 | **T1556.006** | Modify Authentication Process: MFA Policies | MFA factors reset for CEO and others, SMS factor deactivated for Priya Sharma, new TOTP enrolled on attacker-controlled device - 6 accounts compromised; simultaneous logins from geographically impossible locations confirm automation |
+| 13 | **T1136.003** | Create Account: Cloud Account | Backdoor API token created in Okta by mirage after super admin escalation - bypasses login flow entirely and persists after password changes; also covers backdoor-svc in AWS and backdoor-svc-gcp in GCP |
 
 ---
 
@@ -87,17 +80,17 @@ Analyzing detection coverage across the MITRE ATT&CK framework using the Sentine
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
-| 14 | T1580 | Cloud Infrastructure Discovery | ListUsers, ListGroups, ListRoles, ListAccessKeys, DescribeVpcs, DescribeSubnets, DescribeSecurityGroups, DescribeNetworkInterfaces - full AWS environment and network topology mapped |
-| 15 | T1098 | Account Manipulation | backdoor-svc created with admin privileges; login profile set with no required password reset - also covers GCP backdoor-svc-gcp owner role grant and deploy-pipeline privilege escalation |
-| 16 | T1562.007 | Impair Defenses: Disable or Modify Cloud Firewall | AWS security group sg-0a1b2c3d4e5f67890 opened to 0.0.0.0/0 on all ports; GCP firewall rule allow-all-ingress created with identical scope - both cloud environments fully exposed |
-| 17 | T1496.001 | Resource Hijacking: Compute Hijacking | 5x p3.16xlarge GPU instances in AWS and 3x a2-highgpu-8g instances in GCP (crypto-miner-01/02/03) launched for cryptocurrency mining |
-| 18 | T1027 | Obfuscated Files or Information | EC2 userData payload Base64-encoded to conceal the malicious curl command from casual inspection |
-| 19 | T1059.004 | Command and Scripting Interpreter: Unix Shell | Decoded userData = bash script curling shell.sh from attacker-controlled server at 185.220.101.55 - executes on every instance boot |
-| 20 | T1105 | Ingress Tool Transfer | shell.sh pulled from 185.220.101.55 at boot - hosted externally and updatable by the attacker at any time without re-accessing the AWS environment |
-| 21 | T1546 | Event Triggered Execution | userData script fires automatically on every EC2 instance boot - persistence that survives credential rotation and IAM changes entirely |
-| 22 | T1562.008 | Impair Defenses: Disable or Modify Cloud Logs | AWS: StopLogging then DeleteTrail on management-events-trail. GCP: deleted export-all-logs sink (kills SIEM forwarding) then disabled _Default sink (kills local logging) - more thorough in GCP than AWS |
-| 23 | T1530 | Data from Cloud Storage | AWS: api-keys-production.json, hr/employee-records-full.csv, finance/2026-budget-final.xlsx pulled from S3. GCP: financial-report-2026.xlsx, employee-pii-export.csv, api-keys-production.json pulled from pocaas-confidential-data |
-| 24 | T1072 | Software Deployment Tools | deploy-pipeline account granted serviceAccountTokenCreator by mirage - CI/CD pipeline weaponized; deploy-pipeline uploads app.jar to deployment bucket and redeploys web-frontend-01 |
+| 14 | **T1580** | Cloud Infrastructure Discovery | ListUsers, ListGroups, ListRoles, ListAccessKeys, DescribeVpcs, DescribeSubnets, DescribeSecurityGroups, DescribeNetworkInterfaces - full AWS environment and network topology mapped |
+| 15 | **T1098** | Account Manipulation | backdoor-svc created with admin privileges; login profile set with no required password reset - also covers GCP backdoor-svc-gcp owner role grant and deploy-pipeline privilege escalation |
+| 16 | **T1562.007** | Impair Defenses: Disable or Modify Cloud Firewall | AWS security group sg-0a1b2c3d4e5f67890 opened to 0.0.0.0/0 on all ports; GCP firewall rule allow-all-ingress created with identical scope - both cloud environments fully exposed |
+| 17 | **T1496.001** | Resource Hijacking: Compute Hijacking | 5x p3.16xlarge GPU instances in AWS and 3x a2-highgpu-8g instances in GCP (crypto-miner-01/02/03) launched for cryptocurrency mining |
+| 18 | **T1027** | Obfuscated Files or Information | EC2 userData payload Base64-encoded to conceal the malicious curl command from casual inspection |
+| 19 | **T1059.004** | Command and Scripting Interpreter: Unix Shell | Decoded userData = bash script curling shell.sh from attacker-controlled server at 185.220.101.55 - executes on every instance boot |
+| 20 | **T1105** | Ingress Tool Transfer | shell.sh pulled from 185.220.101.55 at boot - hosted externally and updatable by the attacker at any time without re-accessing the AWS environment |
+| 21 | **T1546** | Event Triggered Execution | userData script fires automatically on every EC2 instance boot - persistence that survives credential rotation and IAM changes entirely |
+| 22 | **T1562.008** | Impair Defenses: Disable or Modify Cloud Logs | AWS: StopLogging then DeleteTrail on management-events-trail. GCP: deleted export-all-logs sink (kills SIEM forwarding) then disabled _Default sink (kills local logging) - more thorough in GCP than AWS |
+| 23 | **T1530** | Data from Cloud Storage | AWS: api-keys-production.json, hr/employee-records-full.csv, finance/2026-budget-final.xlsx pulled from S3. GCP: financial-report-2026.xlsx, employee-pii-export.csv, api-keys-production.json pulled from pocaas-confidential-data |
+| 24 | **T1072** | Software Deployment Tools | deploy-pipeline account granted serviceAccountTokenCreator by mirage - CI/CD pipeline weaponized; deploy-pipeline uploads app.jar to deployment bucket and redeploys web-frontend-01 |
 
 ---
  
@@ -114,7 +107,7 @@ Here we see the first stage of the attack: A phishing email that bypassed MailGu
 ![](screenshots/a1.0.png)
 ![](screenshots/a1.2.png)
 
-We see here that the MITRE techniques involved are T1566.001 (spearfishing attachment) and T1566.002 (spearfishing link).
+We see here that the MITRE techniques involved are **T1566.001** (spearfishing attachment) and **T1566.002** (spearfishing link).
 
 This valuable info, especially the payload file, as well as the below findings will be key to tracing the compromise and its next developments:
 
@@ -170,7 +163,7 @@ On top of that, we know that the time of the email was 7:08:40 AM on May 22nd, a
 ![](screenshots/a2.15.png)
 ![](screenshots/a2.16.png)
 
-Looks like that did it! We can see the "Name" of the alerts is "malicious powershell execution", and the attacker's objective is "gain access," which lines up perfectly with what presumably occurred in the initial compromise of running report.exe. This maps cleanly to MITRE technique T1204.002: User Execution: Malicious File.
+Looks like that did it! We can see the "Name" of the alerts is "malicious powershell execution", and the attacker's objective is "gain access," which lines up perfectly with what presumably occurred in the initial compromise of running report.exe. This maps cleanly to MITRE technique **T1204.002**: User Execution: Malicious File.
 
 We also get the golden nuggets of what we need to continue our trace: Mirage user's infected host machine mentioned in AgentId: "win11a", and that the payload was executed at 7:10:34 AM on May 22, 2026!
 
@@ -190,7 +183,7 @@ We do see credential harvesting from LSASS though on the infected machine!:
 
 ![](screenshots/sub.png)
 
-This is the next stage in our attack and these alerts maps to MITRE technique T1003.001: "Extracting credentials from the Local Security Authority Subsystem Service (LSASS) process on Windows"
+This is the next stage in our attack and these alerts maps to MITRE technique **T1003.001**: "Extracting credentials from the Local Security Authority Subsystem Service (LSASS) process on Windows"
 
 These are both true_positives and will very likely be a major attack vector going forward to keep an eye on.
 
@@ -208,7 +201,7 @@ Of the given agentIDs/DisplayNames:
 
 ![](screenshots/ae2.png)
 
-We can see our lateral movement alert to win11d via smb! This was almost certainly achieved using the credentials harvested prior. This specifically maps to (T1021.002): "Adversaries may use Valid Accounts to interact with a remote network share using Server Message Block (SMB). The adversary may then perform actions as the logged-on user"
+We can see our lateral movement alert to win11d via smb! This was almost certainly achieved using the credentials harvested prior. This specifically maps to **T1021.002**: "Adversaries may use Valid Accounts to interact with a remote network share using Server Message Block (SMB). The adversary may then perform actions as the logged-on user"
 
 ---
 
@@ -255,7 +248,7 @@ The other destination IPs though almost seem random as well as their target port
 
 Actually scrolling through all of it, it seems like the whole /24 subnet is scanned, so all 254 IPs on the subnet. It seems like there are about 1 or 2 ports per IP address scanned (or attempted).
 
-Regardless, we have our next documented stage of the attack: MITRE ATT&CK T1046: Network Service Discovery. This differs from 1595: Active Scanning, as 1046 "refers to Network Service Discovery (Discovery) used to map internal services once access has been established," while 1595 is "scanning to find a way in" according to MITRE.org.
+Regardless, we have our next documented stage of the attack: MITRE ATT&CK **T1046**: Network Service Discovery. This differs from 1595: Active Scanning, as 1046 "refers to Network Service Discovery (Discovery) used to map internal services once access has been established," while 1595 is "scanning to find a way in" according to MITRE.org.
 
 Whether this network scanning occurred before or after the lateral movement is difficult to say given we don't have any time difference or process relationships. It's equally as likely that report.exe executed a script automated these operations to occur simultaneously.
 
@@ -289,9 +282,9 @@ Now that that's settled, we want to check that 192.0.2.100 is the only C2 beacon
 
 It returns 21 results and although 17 of them are to 192.0.2.100, scrolling down we actually see two other IP addresses: 198.51.100.42 and 203.0.113.77. These are likely additional attacker machines and/or beacons making C2 connections for redundancy, but we will definitely keep an eye out for those IPs going forward!
 
-There is an exact MITRE technique for this situation: T1567 - "Adversaries use existing, legitimate external web services (like CDNs) to exfiltrate data." In addition, since we saw DNS used as well, T1048: "The most common technique for moving data to an external IP via a protocol other than the main Command and Control channel (HTTPS/HTTP is typical, DNS is not."
+There is an exact MITRE technique for this situation: **T1567** - "Adversaries use existing, legitimate external web services (like CDNs) to exfiltrate data." In addition, since we saw DNS used as well, **T1048**: "The most common technique for moving data to an external IP via a protocol other than the main Command and Control channel (HTTPS/HTTP is typical, DNS is not."
 
-Also, in reference to the multiple C2 channels, that would map to T1008: "Describes adversaries using alternate C2 channels as a backup in case the primary is interrupted or blocked. The idea being that if defenders detect and block the main beacon, the attacker doesn't lose access because the implant automatically falls back to a secondary channel."
+Also, in reference to the multiple C2 channels, that would map to **T1008**: "Describes adversaries using alternate C2 channels as a backup in case the primary is interrupted or blocked. The idea being that if defenders detect and block the main beacon, the attacker doesn't lose access because the implant automatically falls back to a secondary channel."
 
 ---
 
@@ -326,7 +319,7 @@ We see 6 users accounts successfully compromised - clearly of varying levels of 
 
 We see they're from all over the place - and again, at the same time - so obviously automated… Even logins to the same account are from different areas/stats completely (same exact event message like "Authentication of user via MFA" multiple times for the same users in different locations) which obviously indicates impossible travel (if we didn't already know the accounts were compromised).
 
-We can certainly conclude that the privilege escalation indeed came from credential harvesting of multiple accounts and bypassing of Okta MFA security measures. This would map to MITRE technique T1556.006: "Disabling or weakening MFA policies to bypass secondary verification."
+We can certainly conclude that the privilege escalation indeed came from credential harvesting of multiple accounts and bypassing of Okta MFA security measures. This would map to MITRE technique **T1556.006**: "Disabling or weakening MFA policies to bypass secondary verification."
 
 ---
 
@@ -338,7 +331,7 @@ As for backdoor creation, when adding the column "OriginalTarget" to our query:
 
 We can see there is an event that we had looked over before: Create API token. API tokens can be created on Okta by high level users (Mirage after escalation to super user) to bypass the whole login flow and even persist after passwords change. Expanding the event, we can also see the Original Target tells us that a "backdoor API" was created.
 
-This maps cleanly to MITRE technique T1136.003: "refers to the Cloud Account sub-technique under "Create Account". In the context of Okta, this involves adversaries abusing administrative or Identity Provider (IdP) APIs to create rogue Okta user accounts or API tokens for persistence and lateral movement" (MITRE.org).
+This maps cleanly to MITRE technique **T1136.003**: "refers to the Cloud Account sub-technique under "Create Account". In the context of Okta, this involves adversaries abusing administrative or Identity Provider (IdP) APIs to create rogue Okta user accounts or API tokens for persistence and lateral movement" (MITRE.org).
 
 Since we established in 4.7 that there appear to be no windows AD accounts created, it must be a cloud service, indicated in the MITRE technique description.
 
@@ -534,25 +527,25 @@ This essentially allows deploy-pipeline to generate access tokens, impersonate C
 
 There was a lot of malicious activity that occurred in 4.10 and 4.11 to map to MITRE:
 
-The first would be the creation of the backdoor-svc account in the first place (in both GCP and AWS) which maps to T1136.003: "Adversaries create secondary accounts within cloud or SaaS environments (like AWS, Azure AD, or Google Workspace) to maintain persistent access to a compromised system without needing to install obvious malware or backdoors."
+The first would be the creation of the backdoor-svc account in the first place (in both GCP and AWS) which maps to **T1136.003**: "Adversaries create secondary accounts within cloud or SaaS environments (like AWS, Azure AD, or Google Workspace) to maintain persistent access to a compromised system without needing to install obvious malware or backdoors."
 
-Following that would be the fact that Mirage (already had admin privileges from Okta compromise) gave admin privileges to backdoor-svc in AWS. This all maps to technique T1098: "Refers to Account Manipulation. It is a method used by adversaries to quietly modify, hide, or abuse existing user and administrator accounts to maintain persistent, long-term access to a compromised network or to escalate their privileges." Since it is just a console password and not an access key for AWS backdoor-svc, base 1098 seems accurate.
+Following that would be the fact that Mirage (already had admin privileges from Okta compromise) gave admin privileges to backdoor-svc in AWS. This all maps to technique **T1098**: "Refers to Account Manipulation. It is a method used by adversaries to quietly modify, hide, or abuse existing user and administrator accounts to maintain persistent, long-term access to a compromised network or to escalate their privileges." Since it is just a console password and not an access key for AWS backdoor-svc, base 1098 seems accurate.
 
-For GCP specifically, The CreateServiceAccountKey call explicitly creates a standalone RSA-2048 key for backdoor-svc-gcp. This is a persistent credential that lives independently of any password - it doesn't expire by default and survives password resets, making it the textbook example of T1098.001: "A highly specific method where an attacker adds their own adversary-controlled credentials (like API keys, certificates, or SSH keys) to a compromised cloud account."
+For GCP specifically, The CreateServiceAccountKey call explicitly creates a standalone RSA-2048 key for backdoor-svc-gcp. This is a persistent credential that lives independently of any password - it doesn't expire by default and survives password resets, making it the textbook example of **T1098.001**: "A highly specific method where an attacker adds their own adversary-controlled credentials (like API keys, certificates, or SSH keys) to a compromised cloud account."
 
-The next is the use of jane.smith and bob.jones to map of the environment, topology, users, lists, instances, infrastructure/VMs, etc. of the network (GCP and AWS) - T1580: "Cloud Infrastructure Discovery. It describes how adversaries - after compromising an environment - use APIs or commands to map out your cloud infrastructure, pinpointing virtual machines, databases, and storage buckets before planning their next attack."
+The next is the use of jane.smith and bob.jones to map of the environment, topology, users, lists, instances, infrastructure/VMs, etc. of the network (GCP and AWS) - **T1580**: "Cloud Infrastructure Discovery. It describes how adversaries - after compromising an environment - use APIs or commands to map out your cloud infrastructure, pinpointing virtual machines, databases, and storage buckets before planning their next attack."
 
-Allowing anyone on the internet to access (GCP and AWS) the instance with "ipProtocol": "-1" (any port) and "cidrIp": "0.0.0.0/0" would map to T1562.007: "This technique describes an adversary who intentionally alters these configurations to bypass those security controls."
+Allowing anyone on the internet to access (GCP and AWS) the instance with "ipProtocol": "-1" (any port) and "cidrIp": "0.0.0.0/0" would map to **T1562.007**: "This technique describes an adversary who intentionally alters these configurations to bypass those security controls."
 
-Next would be the 5 compute expensive instances (p3.16xlarge) run in AWS, and 3 run in GCP (crypto-miner-01 through 03) which would both map to T1496.001: "attackers illicitly gain access to a victim's computing power (such as CPUs, GPUs, or cloud servers) to run resource-intensive tasks, most commonly cryptocurrency mining."
+Next would be the 5 compute expensive instances (p3.16xlarge) run in AWS, and 3 run in GCP (crypto-miner-01 through 03) which would both map to **T1496.001**: "attackers illicitly gain access to a victim's computing power (such as CPUs, GPUs, or cloud servers) to run resource-intensive tasks, most commonly cryptocurrency mining."
 
-After that is the deleting/prevention of AWS logs, the disassociation of Mirage's account with the compute harvesting instances it spun up, and the modification/deletion of the GCP sink - these all map to T1562.008: "A sub-technique within the MITRE ATT&CK® framework that refers to adversaries disabling or modifying cloud logs to cover their tracks." It is worth noting though that in AWS mirage simply disables CloudTrail logs, whereas in GCP he/she attempts to disable GCP logs AS WELL AS SIEM forwarding.
+After that is the deleting/prevention of AWS logs, the disassociation of Mirage's account with the compute harvesting instances it spun up, and the modification/deletion of the GCP sink - these all map to **T1562.008**: "A sub-technique within the MITRE ATT&CK® framework that refers to adversaries disabling or modifying cloud logs to cover their tracks." It is worth noting though that in AWS mirage simply disables CloudTrail logs, whereas in GCP he/she attempts to disable GCP logs AS WELL AS SIEM forwarding.
 
-The next one would be the modification of the instance with the decoded curl command (Only AWS). This one in particular maps out to a few different techniques. The first one refers to the bash command itself - T1059.004: "Shell sub-technique within the broader 'Command and Scripting Interpreter' execution tactic." The next one refers to the injection aspect - T1105: "refers to Ingress Tool Transfer, which describes how threat actors move malicious tools, scripts, or files from an external, attacker-controlled system into a compromised environment." After that, referring more to the encoded command aspect, is T1027: "refers to Obfuscated Files or Information, a defense evasion technique where adversaries attempt to make files or code difficult for security analysts and automated tools to discover, analyze, or understand." The last one is general and probably the most fitting - T1546: "threat actors and adversaries establish persistence or elevate privileges on a compromised system by setting up malicious code that runs automatically when triggered by specific system events."
+The next one would be the modification of the instance with the decoded curl command (Only AWS). This one in particular maps out to a few different techniques. The first one refers to the bash command itself - **T1059.004**: "Shell sub-technique within the broader 'Command and Scripting Interpreter' execution tactic." The next one refers to the injection aspect - **T1105**: "refers to Ingress Tool Transfer, which describes how threat actors move malicious tools, scripts, or files from an external, attacker-controlled system into a compromised environment." After that, referring more to the encoded command aspect, is **T1027**: "refers to Obfuscated Files or Information, a defense evasion technique where adversaries attempt to make files or code difficult for security analysts and automated tools to discover, analyze, or understand." The last one is general and probably the most fitting - **T1546**: "threat actors and adversaries establish persistence or elevate privileges on a compromised system by setting up malicious code that runs automatically when triggered by specific system events."
 
-The next one is exclusive to GCP: The deploy-pipeline account uploading app.jar to pocaas-deploy-artifacts and then stopping/restarting web-frontend-01 is CI/CD pipeline abuse - the attacker granted themselves serviceAccountTokenCreator on that account specifically to weaponize the deployment pipeline. This is abuse of software tools and maps perfectly to T1072: "Describes how threat actors leverage centralized administrative, management, and monitoring software to execute malicious commands, install malware, or move laterally across an organization's network"
+The next one is exclusive to GCP: The deploy-pipeline account uploading app.jar to pocaas-deploy-artifacts and then stopping/restarting web-frontend-01 is CI/CD pipeline abuse - the attacker granted themselves serviceAccountTokenCreator on that account specifically to weaponize the deployment pipeline. This is abuse of software tools and maps perfectly to **T1072**: "Describes how threat actors leverage centralized administrative, management, and monitoring software to execute malicious commands, install malware, or move laterally across an organization's network"
 
-The last one is the big one - the exfiltration of the sensitive files/buckets (GCP and AWS) which simply maps to T1530: "where adversaries gain access to and steal sensitive information directly from cloud-based storage."
+The last one is the big one - the exfiltration of the sensitive files/buckets (GCP and AWS) which simply maps to **T1530**: "where adversaries gain access to and steal sensitive information directly from cloud-based storage."
 
 ---
 
@@ -579,3 +572,16 @@ In part 4.5, I noted that srvfile potentially had files encrypted due to this qu
 I was under the impression that srvfile and src_dc were also subject to ransomware compromise, but when I filtered out the false_positives, as seen above in the refined query's results, it turns out that only the developer workstation was subject to it.
 
 In the grand scheme of things, this really doesn't change much in terms of the overall logistics of the attack - the C2 beacon(s) were connected to the originally infected workstation (win11a) through DNS/HTTPS channels and data was exfiltrated from the hosts that staged the sensitive files (win11b and it-ws01) - which were sent to win11a - as well as presumably encryption/device info regarding the ransomware on on devws01, and large volumes of that data were sent through the C2 channels to external attacker devices.
+
+
+
+## Other Parts of Lab:
+
+### [Part 1 - Exploration](Sentinel-Part-1/)
+Initial data exploration across multiple enterprise security data sources using Advanced Hunting and KQL. Covers threat hunting across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs, cross-source correlation of suspicious activity, and building a custom multi-tactic detection rule from scratch.
+
+### [Part 2 - Microsoft Defender Threat Intelligence (MDTI) Integration](Sentinel-Part-2/)
+Setting up and integrating the MDTI connector to correlate lab telemetry against Microsoft's global threat intelligence feed. Covers IOC correlation using STIX-formatted indicators, joining threat intel against firewall and cloud logs, and understanding the ThreatIntelIndicators table schema.
+
+### [Part 3 - MITRE ATT&CK Coverage](Sentinel-Part-3/)
+Analyzing detection coverage across the MITRE ATT&CK framework using the Sentinel UI. Covers identifying covered and uncovered tactics, understanding the distinction between Sentinel analytics rules and Defender XDR custom detection rules, and building an original Defense Evasion detection rule targeting process masquerading (T1036).
