@@ -4,11 +4,11 @@
 
 ---
 
-### The main investigation ("part 4" documented in this README) was 100% self-guided and not included in the original lab - there were supplied custom deployed rules that mapped out the attack exactly - but I wanted to perform a full end-to-end manual investigation using my own queries and reasoning *without* the deployed rules. My reasoning for this was:
+### The main investigation ("part 4" documented in this README) was 100% self-guided and not included in the original lab. There were supplied custom deployed rules that mapped out the attack exactly, but I chose to add this part myself to perform a full end-to-end manual investigation using my own queries and reasoning *without* the deployed rules. I only compared the list of deployed lab rules upon completion of my self-guided mapped out attack. My reasoning for this was:
 - #### 1). I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner, and
 - #### 2). I really enjoy the detection process of finding how and where cyber attack's develop using my own knowledge of MITRE attack techniques, networking, and different attack patterns!
 
-### This ended up being a fantastic excercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). 
+### This ended up being a fantastic simulation exercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). There were many "aha" moments, many moments where I had to circle back after gathering more information, and admittedly some moments where I made mistakes - but those actually ended up being some of the areas where I learned the most!
 
 ---
 
@@ -98,11 +98,11 @@
 
 ---
  
-# Part 4 - Real World SOC Attack Simulation & MITRE Mapping
+# Part 4 - Full Sentinel PKWork Incident Investigation 
 
 ## 4.1
 
-For this portion of the lab, I'm going to manually detect and map out the phases of the attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended, we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to try to trace the attack phases without them and simulate a real-world SOC investigation as if we don't have the perfectly-made rules already.
+## For this portion of the lab, I'm going to document my full thoughts and processes as I manually detect and map out the phases of the PKWork attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended, we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to trace the attack phases without them and simulate a real-world SOC investigation as if we don't have the perfectly-made rules already.
 
 We will use the deployed rule for the first stage only to give us a starting point.
 
