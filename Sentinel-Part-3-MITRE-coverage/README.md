@@ -1,4 +1,5 @@
 # Sentinel Part 3 - MITRE ATT&CK Coverage
+<br>
 
 ## 3.1): Getting familiar with the MITRE ATT&CK framework
 
@@ -9,6 +10,7 @@ Getting familiar with the MITRE attack framework and how it correlates with our 
 Here we have all of the attack types that one of our active analytics rules covers (in blue), as well as the ones that aren't covered by our rules (in gray).
 
 ---
+<br>
 
 ## 3.2): Filtering by active scheduled query rules
 
@@ -29,6 +31,7 @@ And we can see all of the different techniques that each of our rules would map 
 ![3.32](screenshots/3.32.png)
 
 ---
+<br>
 
 ## 3.3): Exploring a specific MITRE tactic
 
@@ -37,6 +40,7 @@ Back to the MITRE tactics, we can see which of our rules apply to a specific tac
 ![3.3](screenshots/3.3.png)
 
 ---
+<br>
 
 ## 3.4): Identifying coverage gaps
 
@@ -47,6 +51,7 @@ Instead of identifying unshaded tactics here, I will just refer to the photo abo
 - **Lateral Movement** - no rules for T1021 (Remote services), T1550 (Pass the Hash), or east-west movement between hosts
 
 ---
+<br>
 
 ## 3.5): Creating a custom detection rule for Defense Evasion
 
@@ -94,6 +99,7 @@ Here we can see our enabled created rule! It is at the top as the most recently 
 Going to the MITRE framework grid, the square "T1036: Masquerading" is still white, so this confirms that our rules aren't correctly mapping to MITRE unfortunately, but they are working alert-wise which is the important part!
 
 ---
+<br>
 
 ## Key Skills Demonstrated
 
