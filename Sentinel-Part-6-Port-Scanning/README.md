@@ -134,4 +134,4 @@ We also see that the source IP was internal: 10.0.1.50, which could be a few thi
 
 ---
 
-## Stay tuned for part 6!
+## Stay tuned for part 7!
