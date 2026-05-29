@@ -9,6 +9,7 @@
 - #### 2). I really enjoy the detection process of finding how and where cyber attack's develop using my own knowledge of MITRE attack techniques, networking, and different attack patterns!
 
 <br>
+
 ### This ended up being a fantastic simulation exercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). There were many "aha" moments, many moments where I had to circle back after gathering more information, and admittedly some moments where I made mistakes - but those actually ended up being some of the areas where I learned the most!
 
 ---
