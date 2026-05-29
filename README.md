@@ -650,7 +650,7 @@ For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention 
 ---
 <br>
 
-## Key Skills Demonstrated
+## 4.15: Key Skills Demonstrated
 ##### * Threat Hunting & Incident Investigation
 ##### * Multi-Stage Attack Chain Analysis
 ##### * MITRE ATT&CK Framework Mapping
