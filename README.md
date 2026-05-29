@@ -12,7 +12,7 @@
 
 <br>
 
-# Overview & Methodology
+# Overview & Methodology:
 
 ### The main investigation ("part 4" documented in this README) was 100% self-guided and not included in the original lab. I chose to add this part myself to perform a full end-to-end manual investigation using my own queries and reasoning *without* the lab's supplied deployed rules. I only compared the list of deployed rules upon completion of my self-guided mapped out attack. My reasoning for this was:
 - #### 1). I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner, and
@@ -28,9 +28,9 @@
 
 <br>
 
-# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack on PKWork Network/Cloud (In Order of Attack Progression)
+# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack on PKWork Network/Cloud (In Order of Attack Progression):
 
-## Phase 1 - Initial Access
+## Phase 1 - Initial Access:
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -39,7 +39,7 @@
 
 ---
 
-## Phase 2 - Execution
+## Phase 2 - Execution:
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -47,7 +47,7 @@
 
 ---
 
-## Phase 3 - Credential Access
+## Phase 3 - Credential Access:
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -55,7 +55,7 @@
 
 ---
 
-## Phase 4 - Lateral Movement & Discovery
+## Phase 4 - Lateral Movement & Discovery:
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -64,7 +64,7 @@
 
 ---
 
-## Phase 5 - Impact & Collection (On-Premises)
+## Phase 5 - Impact & Collection (On-Premises):
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -73,7 +73,7 @@
 
 ---
 
-## Phase 6 - C2 & Exfiltration (On-Premises)
+## Phase 6 - C2 & Exfiltration (On-Premises):
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -83,7 +83,7 @@
 
 ---
 
-## Phase 7 - Identity Compromise (Okta)
+## Phase 7 - Identity Compromise (Okta):
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -92,7 +92,7 @@
 
 ---
 
-## Phase 8 & 9 - AWS Cloud & GCP Cloud Intrusion (many shared techniques demonstrated in both so grouped together)
+## Phase 8 & 9 - AWS Cloud & GCP Cloud Intrusion (many shared techniques demonstrated in both so grouped together):
 
 | # | Technique ID | Name | Description |
 |---|---|---|---|
@@ -111,7 +111,7 @@
 ---
 <br>
 
-# Part 4 - Full Sentinel PKWork Incident Investigation 
+# Part 4 - Full Sentinel PKWork Incident Investigation:
 
 ### For this portion of the lab, I'm going to document my full thoughts and processes as I manually detect and map out the phases of the PKWork attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended (see part 3), we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to trace the attack phases without them and simulate a *real-world SOC investigation* as if we don't have the custom deployed rules already.
 
