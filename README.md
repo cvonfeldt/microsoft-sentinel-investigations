@@ -112,7 +112,9 @@
 
 # Part 4 - Full Sentinel PKWork Incident Investigation 
 
-## For this portion of the lab, I'm going to document my full thoughts and processes as I manually detect and map out the phases of the PKWork attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended (see part 3), we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to trace the attack phases without them and simulate a *real-world SOC investigation* as if we don't have the custom deployed rules already.
+### For this portion of the lab, I'm going to document my full thoughts and processes as I manually detect and map out the phases of the PKWork attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended (see part 3), we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to trace the attack phases without them and simulate a *real-world SOC investigation* as if we don't have the custom deployed rules already.
+
+<br>
 
 ## 4.1: Identifying the Initial Payload
 
