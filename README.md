@@ -696,11 +696,17 @@ For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention 
 
 ## Other Parts of Lab:
 
-### [Part 1 - Exploration](Sentinel-Part-1/)
+### [Part 1 - Exploration](Sentinel-Part-1-Exploration/)
 Initial data exploration across multiple enterprise security data sources using Advanced Hunting and KQL. Covers threat hunting across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs, cross-source correlation of suspicious activity, and building a custom multi-tactic detection rule from scratch.
 
-### [Part 2 - Microsoft Defender Threat Intelligence (MDTI) Integration](Sentinel-Part-2/)
+### [Part 2 - Microsoft Defender Threat Intelligence (MDTI) Integration](Sentinel-Part-2-MDTI-Integration/)
 Setting up and integrating the MDTI connector to correlate lab telemetry against Microsoft's global threat intelligence feed. Covers IOC correlation using STIX-formatted indicators, joining threat intel against firewall and cloud logs, and understanding the ThreatIntelIndicators table schema.
 
-### [Part 3 - MITRE ATT&CK Coverage](Sentinel-Part-3/)
+### [Part 3 - MITRE ATT&CK Coverage](Sentinel-Part-3-MITRE-coverage/)
 Analyzing detection coverage across the MITRE ATT&CK framework using the Sentinel UI. Covers identifying covered and uncovered tactics, understanding the distinction between Sentinel analytics rules and Defender XDR custom detection rules, and building an original Defense Evasion detection rule targeting process masquerading (T1036).
+
+### [Part 5 - Automation Rules and Incident Enrichment](Sentinel-Part-5-Automation-Rules/)
+Building Microsoft Sentinel automation rules to enrich and prioritize incidents related to suspicious AWS activity and defense evasion behavior. Covers incident tagging, severity tuning, automation rule logic, AND/OR condition handling, and foundational SOAR concepts including automated response workflows, playbook integration, and investigation task orchestration.
+
+### [Part 6 - Palo Alto Firewall Port Scan Detection](Sentinel-Part-6-Port-Scanning/)
+Investigating and detecting internal network port scanning activity using Palo Alto firewall telemetry and KQL statistical baselining. Covers behavioral threshold calibration using percentiles, custom Sentinel analytics rule creation for MITRE ATT&CK T1046 (Network Service Discovery), scan-speed and port-diversity profiling, validation of detection logic, and identifying indicators of compromised hosts or insider threat activity through blocked connection analysis.
