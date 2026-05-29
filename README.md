@@ -6,7 +6,6 @@
 
 ---
 <br>
-<br>
 
 # Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
 
