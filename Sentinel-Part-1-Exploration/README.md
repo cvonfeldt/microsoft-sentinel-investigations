@@ -15,8 +15,7 @@ Which will give us the number of rows from each table ordered from most rows to 
 ![1.1](screenshots/1.1photo.png)
 
 ---
-
-
+<br>
 
 ## 1.2): Getting more familiar with our EDR data (CrowdStrike)
 
@@ -53,6 +52,7 @@ This longer query makes a table that includes the device name (word after â€œonâ
 
 ---
 
+<br>
 
 
 
@@ -95,6 +95,7 @@ This shows us each drop, deny, or reset (TCP reset - connection closed on both e
 
 ---
 
+<br>
 
 
 
@@ -131,6 +132,7 @@ We see no failed Okta logins/auths, which is a good sign, so we will move on.
 ---
 
 
+<br>
 
 
 ## 1.5): AWS cloud events
@@ -164,6 +166,7 @@ No results for this either which is good news.
 
 ---
 
+<br>
 
 
 
@@ -200,6 +203,7 @@ This is a lot of valuable information, and we can see spikes at 4:15am, 4:34am, 
 
 ---
 
+<br>
 
 
 
@@ -245,6 +249,7 @@ We only see 4 results in the last 24 hours, which honestly makes sense. We want 
 
 ---
 
+<br>
 
 
 
@@ -261,6 +266,8 @@ We have our detection rule officially made:
 ![Rule](screenshots/rulecorrect.png)
 
 ---
+
+<br>
 
 
 
@@ -279,6 +286,7 @@ And here we see it successfully triggered the same 4 alerts we saw when we first
 
 ---
 
+<br>
 
 
 
