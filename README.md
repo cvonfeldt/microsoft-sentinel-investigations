@@ -9,22 +9,23 @@
 
 ---
 
-### The main investigation ("part 4" documented in this README) was 100% self-guided and not included in the original lab. There were supplied custom deployed rules that mapped out the attack exactly, but I chose to add this part myself to perform a full end-to-end manual investigation using my own queries and reasoning *without* the deployed rules. I only compared the list of deployed lab rules upon completion of my self-guided mapped out attack. My reasoning for this was:
+# Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
+
+---
+
+# Overview & Methodology
+
+### The main investigation ("part 4" documented in this README) was 100% self-guided and not included in the original lab. I chose to add this part myself to perform a full end-to-end manual investigation using my own queries and reasoning *without* the lab's supplied deployed rules. I only compared the list of deployed rules upon completion of my self-guided mapped out attack. My reasoning for this was:
 - #### 1). I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner, and
-- #### 2). I really enjoy the detection process of finding how and where cyber attack's develop using my own knowledge of MITRE attack techniques, networking, and different attack patterns!
+- #### 2). I really enjoy the detection learning process and finding how/where cyber attacks develop using my own knowledge of MITRE attack techniques, networking, and different attack patterns!
 
 <br>
 
-### This ended up being a fantastic simulation exercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). There were many "aha" moments, many moments where I had to circle back after gathering more information, and admittedly some moments where I made mistakes - but those actually ended up being some of the areas where I learned the most!
-
----
-
-# Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
-
+### This ended up being a fantastic simulation exercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). There were many "aha" moments, lots of connecting the dots, many moments where I had to circle back after gathering more information, and admittedly some moments where I made mistakes - but those actually ended up being some of the areas where I learned the most!
 ## MITRE ATT&CK Mapping - PKWork Incident (In Order of Attack Progression). 
 
 ---
-
+# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack
 ## Phase 1 - Initial Access
 
 | # | Technique ID | Name | Description |
@@ -107,11 +108,11 @@
  
 # Part 4 - Full Sentinel PKWork Incident Investigation 
 
-## 4.1
+## For this portion of the lab, I'm going to document my full thoughts and processes as I manually detect and map out the phases of the PKWork attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended (see part 3), we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to trace the attack phases without them and simulate a *real-world SOC investigation* as if we don't have the custom deployed rules already.
 
-## For this portion of the lab, I'm going to document my full thoughts and processes as I manually detect and map out the phases of the PKWork attack to their specific MITRE techniques. Since the MITRE grid didn't output as intended, we weren't able to simply map out the attack according to it. The lab deployed rules take us through the attack phases one by one (with their names), but I want to trace the attack phases without them and simulate a real-world SOC investigation as if we don't have the perfectly-made rules already.
+## 4.1: Identifying the Initial Payload
 
-We will use the deployed rule for the first stage only to give us a starting point.
+We will use the deployed rule for *only* the first stage only to give us a starting point.
 
 Here we see the first stage of the attack: A phishing email that bypassed MailGuard SEG from IP: "198.51.100.42" with the payload: "report.exe".
 
@@ -137,7 +138,7 @@ We see that SPF, DKIM, and DMARC all fail, which makes me wonder why MailGuard l
 
 ---
 
-## 4.2
+## 4.2: Execution of Malicious File (Initial Compromise)
 
 Now to find the next stage of the attack, we know that we are working with an endpoint device that was sent a malicious payload, so we know we'll need to query a CrowdStrike table (the EDR vendor in this environment). Since we have worked with the CrowdStrikeAlert table so far, we will query it to see if its columns/data includes a user so we can correlate with the hostname and the rest of the attack:
 
@@ -180,7 +181,7 @@ We also get the golden nuggets of what we need to continue our trace: Mirage use
 
 ---
 
-## 4.3
+## 4.3: Credential Dumping
 
 Now that we know the device infected and the time of infection, we can narrow down our CrowdStrikeAlert query to analyze the malicious activities from the infected machine that followed:
 
@@ -200,7 +201,7 @@ These are both true_positives and will very likely be a major attack vector goin
 
 ---
 
-## 4.4
+## 4.4: Lateral Movement via SMB
 
 Looking over the CrowdStrike logs, I'm realizing that I was treating the "AgentID" column as the sourceIP, thinking that it would have to be win11a to infect the other hosts, when in reality AgentID is simply the endpoint device associated with the alert. This makes a lot more sense considering CrowdStrike is our EDR tool and not one that monitors network/transmission. With that in mind…
 
@@ -216,7 +217,7 @@ We can see our lateral movement alert to win11d via smb! This was almost certain
 
 ---
 
-## 4.5
+## 4.5: Scope of Infection & Network Scanning
 
 Removing the win11a filter, we now that we see at least 7 machines have been infected:
 
@@ -265,7 +266,7 @@ Whether this network scanning occurred before or after the lateral movement is d
 
 ---
 
-## 4.6
+## 4.6: C2 Beacons & Data Exfiltration
 
 Pivoting back to potential lateral/outgoing beacon connection, it seems like we have gleaned about as much as we can out of the palo alto logs in regards to interior movement/scanning. Unfortunately it also seems like we can't get ThreatIntelIndicators logs from the time of the attack, as I connected to MDTI after the attack (had to make a new account):
 
@@ -299,7 +300,7 @@ Also, in reference to the multiple C2 channels, that would map to **T1008**: "De
 
 ---
 
-## 4.7
+## 4.7: Persistence Detection
 
 I know that attackers love to create persistence early before making too much noise on the victim network. At this point with confirmed credentials harvested, lateral movements, data exfiltration, and a clear C2 beacon connection, you'd certainly think they would've created a backdoor by now. Shifting our focus to only the nature of the alerts, it seems like CrowdStrike gives us more info regarding the nature of the actual event itself. We remember from 4.2 that crowdstrike includes "objective" that explains the purpose of the connection initiated, so let's check that (but still making sure the alerts are after the initial compromise):
 
@@ -309,7 +310,7 @@ Looking at the objectives of the alerts, we see "Maintain Presence," In the aler
 
 ---
 
-## 4.8
+## 4.8: Okta MFA Compromise
 
 It would make sense to check the Okta MFA logs to see if any backdoor persistence activity like creating new users/changing MFA rules has occurred, or if the harvested credentials were to login to existing accounts in Okta logins.
 
@@ -334,7 +335,7 @@ We can certainly conclude that the privilege escalation indeed came from credent
 
 ---
 
-## 4.9
+## 4.9: Okta Backdoor Creation
 
 As for backdoor creation, when adding the column "OriginalTarget" to our query:
 
@@ -348,7 +349,7 @@ Since we established in 4.7 that there appear to be no windows AD accounts creat
 
 ---
 
-## 4.10
+## 4.10: AWS Cloud Intrusion
 
 We know that cloud service used in this network is AWS cloud trail, and I'm sure the attacker(s) wreaked havoc on the cloud once they gained access and higher privileges. We will take a look but first will get familiar with the AWSCloudTrail table:
 
@@ -428,7 +429,7 @@ A few more secondary events logged from attacker activity not mentioned above: L
 
 ---
 
-## 4.11
+## 4.11: GCP Cloud Intrusion
 
 Doing a sweep of all of the tables, I realized that I totally missed one of the cloud platform tables! Because it's an acronym and there are only 25 total logs in it, I had skipped over it before, but we have yet to analyze GCP (Google cloud platform) logs, so let's do that now!
 
@@ -534,7 +535,7 @@ This essentially allows deploy-pipeline to generate access tokens, impersonate C
 
 ---
 
-## 4.12
+## 4.12: AWS CloudTrail/Google Cloud Platform MITRE Mapping
 
 There was a lot of malicious activity that occurred in 4.10 and 4.11 to map to MITRE:
 
@@ -560,9 +561,9 @@ The last one is the big one - the exfiltration of the sensitive files/buckets (G
 
 ---
 
-## 4.13
+## 4.13: Tying It All Together
 
-Tying everything together, there were a few logs from earlier parts that didn't exactly receive an explanation, but I wanted to complete the lab and see if I got answers, and for some of them I did!
+Tying everything together, there were a few logs from earlier parts that didn't exactly receive an explanation at the time, but I wanted to complete the lab and see if I got answers...
 
 For the IP addresses acting as backup beacons from part 4.6 (198.51.100.42 and 203.0.113.77), we said we would keep an eye out for them, and we saw both of them in the Cloud Trail activity. Turns out 198.51.100.42 was the attacker's machine that the attack was running from, as it was the IP running mirage in Cloud Trail (as seen in screenshots in 4.11). As for 203.0.113.77 appeared to be a secondary attacker machine, as it was the IP running the backup-svc backdoor account in Cloud Trail:
 
@@ -583,6 +584,13 @@ In part 4.5, I noted that srvfile potentially had files encrypted due to this qu
 I was under the impression that srvfile and src_dc were also subject to ransomware compromise, but when I filtered out the false_positives, as seen above in the refined query's results, it turns out that only the developer workstation was subject to it.
 
 In the grand scheme of things, this really doesn't change much in terms of the overall logistics of the attack - the C2 beacon(s) were connected to the originally infected workstation (win11a) through DNS/HTTPS channels and data was exfiltrated from the hosts that staged the sensitive files (win11b and it-ws01) - which were sent to win11a - as well as presumably encryption/device info regarding the ransomware on on devws01, and large volumes of that data were sent through the C2 channels to external attacker devices.
+
+---
+
+## 4.14: Conclusion
+
+
+---
 
 
 
