@@ -189,6 +189,7 @@ This maps cleanly to MITRE technique **T1204.002**: User Execution: Malicious Fi
 #### We also get the golden nuggets of what we need to continue our trace: Mirage user's infected host machine mentioned in AgentId: "win11a", and that the payload was executed at 7:10:34 AM on May 22, 2026!
 
 ---
+<br>
 
 ## 4.3: Credential Dumping
 
@@ -209,6 +210,7 @@ This is the next stage in our attack and these alerts maps to MITRE technique **
 #### These are both true_positives and will very likely be a major attack vector going forward to keep an eye on.
 
 ---
+<br>
 
 ## 4.4: Lateral Movement via SMB
 
@@ -229,6 +231,7 @@ Of the given agentIDs/DisplayNames:
 This was almost certainly achieved using the credentials harvested prior. This specifically maps to **T1021.002**: "Adversaries may use Valid Accounts to interact with a remote network share using Server Message Block (SMB). The adversary may then perform actions as the logged-on user"
 
 ---
+<br>
 
 ## 4.5: Scope of Infection & Network Scanning
 
@@ -280,6 +283,7 @@ Regardless, we have our next documented stage of the attack: MITRE ATT&CK **T104
 #### Whether this network scanning occurred before or after the lateral movement is difficult to say given we don't have any time difference or process relationships. It's equally as likely that report.exe executed a script automated these operations to occur simultaneously.
 
 ---
+<br>
 
 ## 4.6: C2 Beacons & Data Exfiltration
 
@@ -316,6 +320,7 @@ There is an exact MITRE technique for this situation: **T1567** - "Adversaries u
 Also, in reference to the multiple C2 channels, that would map to **T1008**: "Describes adversaries using alternate C2 channels as a backup in case the primary is interrupted or blocked. The idea being that if defenders detect and block the main beacon, the attacker doesn't lose access because the implant automatically falls back to a secondary channel."
 
 ---
+<br>
 
 ## 4.7: Persistence Detection
 
@@ -330,6 +335,7 @@ At this point with confirmed credentials harvested, lateral movements, data exfi
 This seems inherently like it would be the backdoor persistence we are looking for, but this could very well just be continuous pinging of the C2 server to ensure connection is still enabled. We don't see any new users created on windows AD (no privilege escalation, and maintain persistence is only on win11a) so let's check softwares and utilities to see if backdoor access was created instead in the cloud/MFA.
 
 ---
+<br>
 
 ## 4.8: Okta MFA Compromise
 
@@ -362,6 +368,7 @@ And again, at the same time - so obviously automated… Even logins to the same 
 This would map to MITRE technique **T1556.006**: "Disabling or weakening MFA policies to bypass secondary verification."
 
 ---
+<br>
 
 ## 4.9: Okta Backdoor Creation
 
@@ -378,6 +385,7 @@ This maps cleanly to MITRE technique **T1136.003**: "refers to the Cloud Account
 #### Since we established in 4.7 that there appear to be no windows AD accounts created, it must be a cloud service, indicated in the MITRE technique description.
 
 ---
+<br>
 
 ## 4.10: AWS Cloud Intrusion
 
@@ -462,6 +470,7 @@ I wanted to clarify this to see if this info was involved in the exfiltration fr
 A few more secondary events logged from attacker activity not mentioned above: ListUsers, ListGroups, ListRoles, ListAccessKeys - mapping out the entire AWS environment. Also DescribeVpcs, DescribeSubnets, DescribeSecurityGroups, DescribeNetworkInterfaces - mapping the network topology.
 
 ---
+<br>
 
 ## 4.11: GCP Cloud Intrusion
 
@@ -572,6 +581,7 @@ roles/iam.serviceAccountTokenCreator
 ### This essentially allows deploy-pipeline to generate access tokens, impersonate CI/CD pipelines, and move laterally in the cloud.
 
 ---
+<br>
 
 ## 4.12: AWS CloudTrail/Google Cloud Platform MITRE Mapping
 
@@ -598,6 +608,7 @@ The next one is exclusive to GCP: The deploy-pipeline account uploading app.jar 
 The last one is the big one - the exfiltration of the sensitive files/buckets (GCP and AWS) which simply maps to **T1530**: "where adversaries gain access to and steal sensitive information directly from cloud-based storage."
 
 ---
+<br>
 
 ## 4.13: Tying It All Together
 
@@ -626,6 +637,7 @@ In the grand scheme of things, this really doesn't change much in terms of the o
 For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention from real attack, we never necessarily got confirmation that it was a decoy user, but all signs point towards that. In terms of MITRE mapping, I did some research on it and found that there is actually no MITRE ATT&CK Framework technique that a decoy attacker would map to. I was a bit surprised by this, but I know that the MITRE D3FEND Framework has decoy objects like honeynets, honeyfiles, and even honeyusers/honeyaccounts. I almost think of this like a honeyuser but in the opposite direction - one to throw the victim blue team off the attacker's trail, get them to target/focus on the wrong thing, and/or potentially confuse the victim blue team. 
 
 ---
+<br>
 
 ## 4.14: Conclusion
 #### This was a multi-stage attack from an attacker infrastructure/network based in Moscow, whose initial attack vector began with a phishing email link to mirage's workstation: "win11a". The initial payload, "report.exe" was executed on that work station and havoc immediately ensued. The executable ran a script that spawned a number of sophisticated automated attacks all at the same time. These attacks included credential harvesting, lateral movement to many other hosts, file staging, encryption of (presumably) source code on a developer workstation, local network data exfiltration through C2 beacon channels, MFA manipulation and account takeover in Okta, backdoor users created in Okta and cloud platforms, cloud IAM rules manipulated in both privilege escalation and user creation, cloud compute resources harvested with expensive cryptomining instances, exfiltration of sensitive cloud files, injection of obfuscated commands (to reach out to attacker server) in previously made cloud instances, API keys stolen in Okta and GCP, and other malicious activity.
