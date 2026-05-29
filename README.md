@@ -1,11 +1,10 @@
 # SOC Investigation & Detection Engineering with Microsoft Sentinel and KQL
 
-## Explaining my walkthroughs and thought processes in Microsoft Sentinel SOC investigations using KQL across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs. Includes KQL detection rules, threat hunting queries, and MITRE ATT&CK mapping. 
-## Parts done in order and can be found in directories above (or after "part 4" documentation below). 
+### Explaining my walkthroughs and thought processes in Microsoft Sentinel SOC investigations using KQL across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs. Includes KQL detection rules, threat hunting queries, and MITRE ATT&CK mapping. Parts done in order and can be found in directories above (or after "part 4" documentation below). 
 
-## The main investigation ("part 4" documented in this README) was a part not included in the original lab - there were supplied custom deployed rules that mapped out the attack exactly, but I wanted to perform a full end-to-end manual investigation using my own queries and reasoning *without* the deployed rules. I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner. 
+### The main investigation ("part 4" documented in this README) was a part not included in the original lab - there were supplied custom deployed rules that mapped out the attack exactly, but I wanted to perform a full end-to-end manual investigation using my own queries and reasoning *without* the deployed rules. I know that there aren't custom rules for every attack that SOC's see, and that pattern recongition and attack-chain analysis are crucial when it comes to responding to novel attacks in a timely and effective manner. 
 
-### This ended up being a fantastic excercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of working with a wide variety of ingested logs and information, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). 
+##### This ended up being a fantastic excercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of working with a wide variety of ingested logs and information, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). 
 
 
 # Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
