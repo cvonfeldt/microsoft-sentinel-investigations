@@ -1,4 +1,5 @@
 # Sentinel Part 1 - Exploration
+<br>
 
 ## 1.1): Getting familiar with our data in the defender portal
 
