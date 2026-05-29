@@ -1,4 +1,6 @@
 # Sentinel Part 6 - Palo Alto Firewall Port Scan Detection
+<br>
+
 ## 6.1): Investigating Port Scanning Activity
 In this portion of the lab, we will investigate port scanning activity on palo alto firewall (MITRE T1046). Before diving into it, we will get a gauge on our port diversity with the query:
 <br>
@@ -30,6 +32,7 @@ These results tell us that most of the dropped connections were only to 1 or 2 p
 <br>
 
 ---
+<br>
 
 ## 6.2): Building the Detection Rule
 Since the max we saw in our data is 25 ports of dropped connection, we will set our threshold to alert on > 24 ports of dropped connection:
@@ -85,6 +88,7 @@ This long rule alerts us when 25+ port connections are dropped and gives us a lo
 <br>
 
 ---
+<br>
 
 ## 6.3): Validating the Rule
 Now to confirm the rule works the way we intended by manually running the query:
@@ -116,6 +120,7 @@ It looks like all of the columns correctly outputted as intended! We can see tha
 We also see that the source IP was internal: 10.0.1.50, which could be a few things: That we are dealing with a routine internal port scan for patching, or more worrisome, an insider threat... Or even MORE worrisome, a compromised machine. We will keep this in mind going forward!
 
 ---
+<br>
 
 ## Key Skills Demonstrated
 - Microsoft Sentinel Custom Detection Rules
