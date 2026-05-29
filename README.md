@@ -5,8 +5,6 @@
 
 ### All parts done in order by nuber and the other 14 parts can be found in directories above (or after "part 4" documentation below). 
 
-<br>
-
 ---
 
 # Part 4 – Full manual SOC investigation doucmentation with MITRE ATT&CK Mapping (Ordered SOC Investigation Timeline). Extensive main investigation of the lab that all other parts work around. 
@@ -21,11 +19,14 @@
 
 <br>
 
-### This ended up being a fantastic simulation exercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). There were many "aha" moments, lots of connecting the dots, many moments where I had to circle back after gathering more information, and admittedly some moments where I made mistakes - but those actually ended up being some of the areas where I learned the most!
-## MITRE ATT&CK Mapping - PKWork Incident (In Order of Attack Progression). 
+### This ended up being a fantastic simulation exercise and I gained what I feel was extremely valuable experience working through the multi-stage attack detection in Sentinel. In the detection I strengthened my ability of KQL querying and overall understanding of a wide variety of ingested logs/data, such as firewall tools (Palo Alto Network), EDR tools (CrowdStrike), IAM platforms (Okta), and cloud platforms (AWS CloudTrail and Google Cloud Platform). 
 
----
-# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack
+### There were many "aha" moments, lots of connecting the dots, many moments where I had to circle back after gathering more information, and admittedly some moments where I made mistakes - but those actually ended up being some of the areas where I learned the most!
+
+--- 
+
+# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack on PKWork Network/Cloud (In Order of Attack Progression)
+
 ## Phase 1 - Initial Access
 
 | # | Technique ID | Name | Description |
@@ -326,10 +327,11 @@ Scrolling down some more:
 
 We see 6 users accounts successfully compromised - clearly of varying levels of roles/privileges (super admin role, CEO credentials, etc.) - and when checking the location of the logins:
 
+![](screenshots/4.95.png)
 ![](screenshots/4.png)
 ![](screenshots/5.png)
 
-We see they're from all over the place - and again, at the same time - so obviously automated… Even logins to the same account are from different areas/stats completely (same exact event message like "Authentication of user via MFA" multiple times for the same users in different locations) which obviously indicates impossible travel (if we didn't already know the accounts were compromised).
+We notice 2 things: That the main attacker on mirage's compromised device is logged in from Moscow, suggesting that is the site of the infrastructure and source of the atack. On top of that, we see the activity is from *all over* the place - and again, at the same time - so obviously automated… Even logins to the same account are from different areas/stats completely (same exact event message like "Authentication of user via MFA" multiple times for the same users in different locations) which obviously indicates impossible travel (if we didn't already know the accounts were compromised).
 
 We can certainly conclude that the privilege escalation indeed came from credential harvesting of multiple accounts and bypassing of Okta MFA security measures. This would map to MITRE technique **T1556.006**: "Disabling or weakening MFA policies to bypass secondary verification."
 
@@ -482,6 +484,8 @@ The next two logs are modifying the "sink" which is essentially the setting that
 sinkName: projects/pocaas-prod-01/sinks/export-all-logs
 ```
 
+This essentially blocks logging to SIEMS and other external resources.
+
 Then the second one updates the sink request:
 
 ```
@@ -490,11 +494,11 @@ sinkName: projects/pocaas-prod-01/sinks/_Default
 Sink: {"name":"_Default","disabled":true}
 ```
 
-Which as we can see turns of the delete sink logging on the GCP.
+Which as we can see turns off the sink logging insideFlist the GCP.
 
 Next the account of Jane.Smith is used to list all of the VM instances in the project, and get the details of one VM (web-frontend-01) with: compute.instances.list and compute.instances.get
 
-Then, an account called deploy-pipeline@pocaas-prod-01.iam.gserviceaccount.com Lists files in bucket pocaas-app-logs, then Uploads a build artifact (JAR file) with:
+Then, an account called deploy-pipeline@pocaas-prod-01.iam.gserviceaccount.com lists files in bucket pocaas-app-logs, then Uploads a build artifact (JAR file) with:
 
 ```
 @type: type.googleapis.com/storage.objects.create
@@ -563,7 +567,7 @@ The last one is the big one - the exfiltration of the sensitive files/buckets (G
 
 ## 4.13: Tying It All Together
 
-Tying everything together, there were a few logs from earlier parts that didn't exactly receive an explanation at the time, but I wanted to complete the lab and see if I got answers...
+Tying everything together, there were a few logs from earlier parts that didn't exactly receive an explanation at the time, but I wanted to complete the lab and see if I got answers, and for most of them I did!
 
 For the IP addresses acting as backup beacons from part 4.6 (198.51.100.42 and 203.0.113.77), we said we would keep an eye out for them, and we saw both of them in the Cloud Trail activity. Turns out 198.51.100.42 was the attacker's machine that the attack was running from, as it was the IP running mirage in Cloud Trail (as seen in screenshots in 4.11). As for 203.0.113.77 appeared to be a secondary attacker machine, as it was the IP running the backup-svc backdoor account in Cloud Trail:
 
@@ -584,6 +588,8 @@ In part 4.5, I noted that srvfile potentially had files encrypted due to this qu
 I was under the impression that srvfile and src_dc were also subject to ransomware compromise, but when I filtered out the false_positives, as seen above in the refined query's results, it turns out that only the developer workstation was subject to it.
 
 In the grand scheme of things, this really doesn't change much in terms of the overall logistics of the attack - the C2 beacon(s) were connected to the originally infected workstation (win11a) through DNS/HTTPS channels and data was exfiltrated from the hosts that staged the sensitive files (win11b and it-ws01) - which were sent to win11a - as well as presumably encryption/device info regarding the ransomware on on devws01, and large volumes of that data were sent through the C2 channels to external attacker devices.
+
+For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention from real attack, we never necessarily got confirmation that it was a decoy user, but all signs point towards that. In terms of MITRE mapping, I did some research on it and found that there is actually no MITRE ATT&CK Framework technique that a decoy attacker would map to. I was a bit surprised by this, but I know that the MITRE D3FEND Framework has decoy objects like honeynets, honeyfiles, and even honeyusers/honeyaccounts. I almost think of this like a honeyuser but in the opposite direction - one to throw the victim blue team off the attacker's trail, get them to target/focus on the wrong thing, and/or potentially confuse the victim blue team. 
 
 ---
 
