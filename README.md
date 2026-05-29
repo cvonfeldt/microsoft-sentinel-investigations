@@ -649,7 +649,6 @@ For user eve.hacker on AWS and GCP, who we assume was a decoy to draw attention 
 
 ---
 <br>
-<br>
 
 ## Key Skills Demonstrated
 ##### * Threat Hunting & Incident Investigation
