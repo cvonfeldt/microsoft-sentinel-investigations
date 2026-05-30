@@ -4,7 +4,7 @@
 
 First we can take a look at our okta events (which we got very familiar with in the in depth investigation) specifically having to do with mfa:
 
-![Okta MFA events](7.1.png)
+![Okta MFA events](screenshots/7.1.png)
 
 ---
 
@@ -32,7 +32,7 @@ OktaV2_CL
 
 We see this just outputs results where MFA was successfully deactivated, reset, or updated:
 
-![Base rule results](7.2.png)
+![Base rule results](screenshots/7.2.png)
 
 If we wanted to improve this rule to identify a more specific indicator of compromise through correlation could query:
 
@@ -72,7 +72,7 @@ mfa_events
 
 This query correlates the first query we made - that checks for MFA manipulation - with another query of Okta that checks for successful logins outside of Australia (where the network is located). It then joins on the condition that the user and sourceIP are the same, and where MFA manipulation occurs 30 >= minutes after the time of the foreign login. Let's look at the results:
 
-![Correlated query results](7.3.png)
+![Correlated query results](screenshots/7.3.png)
 
 (I had to adjust the time to match the time of the attack)
 
@@ -86,4 +86,4 @@ This way, we have an automated alert that detects this correlation on its own, a
 
 Creating the alert, we see it at the top of our list!:
 
-![Detection rule created](7.5.png)
+![Detection rule created](screenshots/7.5.png)
