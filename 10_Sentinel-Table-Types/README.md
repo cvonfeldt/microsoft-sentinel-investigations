@@ -157,10 +157,18 @@ Although my tables show that data lake is integrated and I can make tables into 
 ---
 <br> 
 
-## Key Skills Demonstrated
-- Data Retention Configuration (Analytics vs Data Lake Tiers)
-- Table Tier Management (Analytics → Data Lake promotion)
-- Sentinel Data Lake Architecture
-- Cost Optimization via Tiered Storage
-- Table Plan Management via Azure Portal
-- Data Lake Integration Verification
+## Key Concepts From Parts 11-17
+- Sentinel Data Lake Architecture & Tier Management
+- KQL Job Creation & Scheduling
+- Data Lake to Analytics Tier Promotion
+- Real-Time vs Batch Detection Tradeoff Analysis
+- PySpark Distributed Security Data Processing
+- Beaconing & DNS Tunneling Detection via Notebooks
+- Data Exfiltration Pattern Analysis
+- AI-Assisted Investigation via Sentinel MCP Server
+- Custom MCP Tool Authoring from KQL Queries
+- External Data Federation (ADLS Gen2)
+- Ingestion-Time Data Routing via Split Transformation Rules
+- Custom Graph Construction & GQL Querying
+- Cross-Source Attack Chain Visualization
+- Kill Chain Lateral Movement Tracing
