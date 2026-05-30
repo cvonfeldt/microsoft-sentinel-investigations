@@ -153,3 +153,14 @@ There is actually normally a workaround for this through use of KQL jobs. KQL jo
 ![Data lake onboarding limitation](screenshots/10.8.png)
 
 Although my tables show that data lake is integrated and I can make tables into data lakes through Azure (indicating the infrastructure is provisioned), the exploration UI was not accessible. Normally this would be accessed via Microsoft Sentinel - data lake exploration - jobs/KQL queries.
+
+---
+<br> 
+
+## Key Skills Demonstrated
+- Data Retention Configuration (Analytics vs Data Lake Tiers)
+- Table Tier Management (Analytics → Data Lake promotion)
+- Sentinel Data Lake Architecture
+- Cost Optimization via Tiered Storage
+- Table Plan Management via Azure Portal
+- Data Lake Integration Verification
