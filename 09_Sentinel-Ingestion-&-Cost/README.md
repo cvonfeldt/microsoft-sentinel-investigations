@@ -153,3 +153,14 @@ Now we can go create the rule:
 ![Ingestion alert rule](screenshots/9.9.png)
 
 Here we can see the rule is created (had to use hunting instead of advanced hunting because usage table is in log analytics)
+
+---
+<br> 
+
+## Key Skills Demonstrated
+- Billing & Ingestion Cost Analysis via Usage Table
+- Ingestion Delay Measurement & Pipeline Health Monitoring
+- Log Analytics Workspace Cost Optimization
+- Workspace Usage Workbook Analysis
+- KQL Time Binning & Aggregation
+- Scheduled Alert Rule Creation (Log Analytics)
