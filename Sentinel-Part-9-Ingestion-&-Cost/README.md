@@ -129,9 +129,9 @@ The Daily checks include:
 
 Some potential changes to consider if we were in a real-world environment ingesting much higher volumes of data:
 
-- **Filter at ingestion** — Use Data Collection Rules (DCR) to drop unnecessary columns or rows before ingestion. Reduces volume directly.
-- **Use commitment tiers** — If you ingest 100+ GB/day consistently, switch from pay-as-you-go to a commitment tier. Up to 50% discount.
-- **Archive to long-term storage** — Data beyond interactive retention moves to archive tier at ~$0.02/GB/month. 90%+ savings on old data.
+- **Filter at ingestion** - Use Data Collection Rules (DCR) to drop unnecessary columns or rows before ingestion. Reduces volume directly.
+- **Use commitment tiers** - If you ingest 100+ GB/day consistently, switch from pay-as-you-go to a commitment tier. Up to 50% discount.
+- **Archive to long-term storage** - Data beyond interactive retention moves to archive tier at ~$0.02/GB/month. 90%+ savings on old data.
 
 ---
 <br>
