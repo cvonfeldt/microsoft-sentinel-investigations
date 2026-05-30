@@ -1,0 +1,9 @@
+EventSource,ServiceName,Criticality
+iam.amazonaws.com,IAM,Critical
+s3.amazonaws.com,S3,High
+ec2.amazonaws.com,EC2,High
+lambda.amazonaws.com,Lambda,Medium
+kms.amazonaws.com,KMS,Critical
+sts.amazonaws.com,STS,Critical
+organizations.amazonaws.com,Organizations,Critical
+cloudtrail.amazonaws.com,CloudTrail,High
