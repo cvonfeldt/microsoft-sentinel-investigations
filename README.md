@@ -25,7 +25,7 @@
 
 <br>
 
-# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack on PKWork Network/Cloud (In Order of Attack Progression):
+# Final MITRE ATT&CK Mapping of Complete Multi-Stage Attack on PKWork Network/Cloud (in order of attack progression):
 
 ## Phase 1 - Initial Access:
 
