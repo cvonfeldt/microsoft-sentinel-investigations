@@ -1,5 +1,7 @@
 # Section 7 — Okta MFA Manipulation Detection
 
+<br>
+
 ## 7.1 — Reviewing Okta MFA Events
 
 First we can take a look at our okta events (which we got very familiar with in the in depth investigation) specifically having to do with mfa:
