@@ -13,7 +13,6 @@
 #### If we were able to get data lake fully onboarded, the next part of the lab we would have created a scheduled KQL job that queries Palo Alto firewall data from the cheaper data lake tier, aggregates it into source-destination pair summaries, and promotes the results to the analytics tier where a detection rule can query them - bridging the gap between cost-effective long term storage and real time threat detection.
 
 ---
-<br>
 
 ## Part 12: Data Lake vs Real-Time Detection 
 
@@ -22,7 +21,6 @@
 #### The key tradeoff being that real-time catches threats as they happen with full event detail, while data lake detection runs on a longer delay but is cheaper and better suited for trend and anomaly  detection over extended time ranges. The exercise depended on the PaloAlto_ThreatSummary_KQL_CL table created by the KQL job in the previous exercise, which required a fully onboarded Sentinel data lake.
 
 ---
-<br>
 
 ## Part 13: Data Lake Notebooks 
 
@@ -33,7 +31,6 @@
 #### The exercise unfortunately also requires a fully onboarded Sentinel data lake, as well as a configured Spark runtime pool, neither of which were available in this lab environment.
 
 ---
-<br>
 
 ## Part 14: Sentinel MCP Server 
 
@@ -44,7 +41,6 @@
 #### You can also save your own KQL queries as custom MCP tools, turning proven hunting queries into reusable parameterized tools the whole SOC team can invoke through an AI assistant.
 
 ---
-<br>
 
 ## Part 15: Data Federation with ADLS Gen2 
 
@@ -55,7 +51,6 @@
 #### This exercise was not completed as it requires a fully onboarded data lake, an Azure data lake Storage Gen2 account with hierarchical namespace enabled, a service principal, and an Azure key vault to store credentials - none of which were available in this lab environment yet again unfortunately.
 
 ---
-<br>
 
 ## Part 16: Data Transformation - Split Ingestion by Tier 
 
@@ -66,7 +61,6 @@
 #### This was another exercise that required a fully onboarded Sentinel data lake to enable the split rule option on tables.
 
 ---
-<br>
 
 ## Part 17: Custom Graph - Cross-Source Attack Chain
 
