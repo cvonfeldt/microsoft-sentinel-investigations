@@ -26,8 +26,7 @@ Data collected into Microsoft Sentinel is stored in tables. Each table can be co
 <br>
 <br>
 
-#### Free storage: Microsoft Sentinel solution tables (like CommonSecurityLog, SecurityEvent) get 90 days of analytics retention for free. XDR tables get 30 days included in the XDR license.
-
+### Free storage: Microsoft Sentinel solution tables (like CommonSecurityLog, SecurityEvent) get 90 days of analytics retention for free. XDR tables get 30 days included in the XDR license.
 ### Cost Implications:
 
 | Action | Cost Impact |
