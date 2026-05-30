@@ -64,9 +64,9 @@ To find the most expensive tables:
 We see that ThreatIntelIndicators is the most expensive by far, which makes sense as we saw a high volume of events from that table.
 
 ---
+<br>
 
 ## 9.3): Ingestion Delay Analysis
-<br>
 
 This query:
 
