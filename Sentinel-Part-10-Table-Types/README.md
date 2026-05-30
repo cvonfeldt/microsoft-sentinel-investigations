@@ -1,4 +1,5 @@
 # Sentinel Part 10 - Table Management & Data Lake Configuration
+<br>
 
 ## Background - Analytics vs Data Lake Tiers
 
