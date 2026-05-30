@@ -7,6 +7,7 @@ First we can take a look at our okta events (which we got very familiar with in 
 ![Okta MFA events](screenshots/7.1.png)
 
 ---
+<br>
 
 ## 7.2 — Base Detection Rule: MFA Manipulation
 
@@ -37,6 +38,7 @@ We see this just outputs results where MFA was successfully deactivated, reset, 
 If we wanted to improve this rule to identify a more specific indicator of compromise through correlation could query:
 
 ---
+<br>
 
 ## 7.3 — Correlated Detection Rule: Foreign Login Followed by MFA Manipulation
 
@@ -81,6 +83,7 @@ With three results, we know that there was only one foreign login within 30 minu
 This way, we have an automated alert that detects this correlation on its own, and if it fires, we'd know we have a situation like we did in the part 4 investigation - an almost-sure indicator of okta takeover!
 
 ---
+<br>
 
 ## 7.4 — Saving as a Detection Rule
 
