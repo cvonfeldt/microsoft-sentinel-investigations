@@ -110,3 +110,14 @@ We can save this query as a detection rule enhanced with Criticality and Service
 Here is the created rule:
 
 ![Detection rule](screenshots/8.6.png)
+
+---
+<br>
+
+## Key Skills Demonstrated
+- Microsoft Sentinel Watchlist Creation & Management
+- KQL Lookup & Left Outer Join Enrichment
+- Coalesce-based Null Handling in KQL
+- AWS CloudTrail Analysis
+- IOC Enrichment via Watchlist
+- Dynamic Alert Naming with Entity Fields
