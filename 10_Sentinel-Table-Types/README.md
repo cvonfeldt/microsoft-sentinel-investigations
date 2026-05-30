@@ -24,8 +24,9 @@ Data collected into Microsoft Sentinel is stored in tables. Each table can be co
 | Analytics retention | 30 days – 2 years | How long data stays in the "hot" analytics tier for real-time querying |
 | Total retention | Up to 12 years | Total data lifespan including analytics + data lake |
 <br>
+<br>
 
-Free storage: Microsoft Sentinel solution tables (like CommonSecurityLog, SecurityEvent) get 90 days of analytics retention for free. XDR tables get 30 days included in the XDR license.
+#### Free storage: Microsoft Sentinel solution tables (like CommonSecurityLog, SecurityEvent) get 90 days of analytics retention for free. XDR tables get 30 days included in the XDR license.
 
 ### Cost Implications:
 
