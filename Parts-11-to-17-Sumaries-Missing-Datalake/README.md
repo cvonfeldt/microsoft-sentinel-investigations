@@ -70,6 +70,8 @@
 
 ## Part 17: Custom Graph - Cross-Source Attack Chain
 
-#### For the final part of the lab, we would have built a custom Sentinel graph correlating entities across 6 data sources - CrowdStrike, Palo alto, Okta, AWS CloudTrail, GCP Audit Logs, and MailGuard - to visualize the complete attack chain. Unlike the built-in XDR graph which only models Microsoft-centric entities, custom graphs let you define your own node and edge types from any data lake table, then query relationships using GQL (Graph Query Language). The finished graph links users, devices, IPs, cloud accounts, and email threats across all sources, letting you trace an attacker's full movement from initial email threat through endpoint compromise, identity abuse, cloud activity, and firewall traffic in a single visualization. You can then materialize it as a scheduled job so it stays current and is queryable by the whole SOC team in the Defender portal.
+#### For the final part of the lab, we would have built a custom Sentinel graph correlating entities across 6 data sources - CrowdStrike, Palo alto, Okta, AWS CloudTrail, GCP Audit Logs, and MailGuard - to visualize the complete attack chain. Unlike the built-in XDR graph which only models Microsoft-centric entities, custom graphs let you define your own node and edge types from any data lake table, then query relationships using GQL (Graph Query Language). 
+
+#### The finished graph links users, devices, IPs, cloud accounts, and email threats across all sources, letting you trace an attacker's full movement from initial email threat through endpoint compromise, identity abuse, cloud activity, and firewall traffic in a single visualization. You can then materialize it as a scheduled job so it stays current and is queryable by the whole SOC team in the Defender portal.
 
 #### This part required fully onboarded data lake, a Spark compute pool, and paid GitHub Copilot for the AI authoring portion.
