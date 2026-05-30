@@ -2,7 +2,7 @@
 
 ### Explaining my walkthroughs and thought processes in Microsoft Sentinel SOC investigations using KQL across CrowdStrike EDR, Palo Alto firewall, Okta identity, and AWS CloudTrail logs. Includes KQL detection rules, threat hunting queries, and MITRE ATT&CK mapping. 
 
-#### All parts done in order by number and the other 14 parts can be found in directories above (or after "part 4" documentation below). 
+#### All parts done in order by number and the other 9 parts can be found in directories above (or after "part 4" documentation below). 
 
 ---
 <br>
