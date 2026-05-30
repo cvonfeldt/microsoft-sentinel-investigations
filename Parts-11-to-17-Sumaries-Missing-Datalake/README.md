@@ -17,21 +17,27 @@
 
 ## Part 12: Data Lake vs Real-Time Detection 
 
-#### In the part after that that builds on that, we would have compared real-time detection against data lake aggregated detection side by side - running the same port scan detection two ways: once against raw CommonSecurityLog events in near real time, and once against the pre-aggregated PaloAlto_ThreatSummary_KQL_CL table populated by the KQL job. The key tradeoff being that real-time catches threats as they happen with full event detail, while data lake detection runs on a longer delay but is cheaper and better suited for trend and anomaly  detection over extended time ranges. The exercise depended on the PaloAlto_ThreatSummary_KQL_CL table created by the KQL job in the previous exercise, which required a fully onboarded Sentinel data lake.
+#### In the part after that that builds on that, we would have compared real-time detection against data lake aggregated detection side by side - running the same port scan detection two ways: once against raw CommonSecurityLog events in near real time, and once against the pre-aggregated PaloAlto_ThreatSummary_KQL_CL table populated by the KQL job. 
+
+#### The key tradeoff being that real-time catches threats as they happen with full event detail, while data lake detection runs on a longer delay but is cheaper and better suited for trend and anomaly  detection over extended time ranges. The exercise depended on the PaloAlto_ThreatSummary_KQL_CL table created by the KQL job in the previous exercise, which required a fully onboarded Sentinel data lake.
 
 ---
 <br>
 
 ## Part 13: Data Lake Notebooks 
 
-#### In the exercise after that, we would have used Jupyter notebooks in VS Code with the Microsoft Sentinel extension to run an interactive investigation against the data lake - connecting to a spark engine to analyze Palo Alto firewall logs from CommonSecurityLog at scale. The notebook walks through a full threat investigation covering beaconing detection, DNS tunneling, data exfiltration analysis, and an attack timeline, producing interactive Plotly visualizations for each. The key advantage over portal KQL queires is that Spark processes data across distributed compute handling massive volumes, and results can be written back to the data lake or promoted to the analytics tier for follow-up KQL queries and detections. The exercise unfortunately also requires a fully onboarded Sentinel data lake, as well as a configured Spark runtime pool, neither of which were available in this lab environment.
+#### In the exercise after that, we would have used Jupyter notebooks in VS Code with the Microsoft Sentinel extension to run an interactive investigation against the data lake - connecting to a spark engine to analyze Palo Alto firewall logs from CommonSecurityLog at scale. The notebook walks through a full threat investigation covering beaconing detection, DNS tunneling, data exfiltration analysis, and an attack timeline, producing interactive Plotly visualizations for each. The key advantage over portal KQL queires is that Spark processes data across distributed compute handling massive volumes, and results can be written back to the data lake or promoted to the analytics tier for follow-up KQL queries and detections. 
+
+#### The exercise unfortunately also requires a fully onboarded Sentinel data lake, as well as a configured Spark runtime pool, neither of which were available in this lab environment.
 
 ---
 <br>
 
 ## Part 14: Sentinel MCP Server 
 
-#### In part 14, we would have connected the Microsoft Sentinel MCP server to VS Code and GitHub Copilot, exposing Sentinel's data lake and Defender XDR apis as callable tools for an AI agent. It required VS Code with the sentinel extension - which I do have - but also a paid GitHub Copilot subscription, and a fully onboarded Sentinel data lake for the data exploration prompts. Part 14 though, was intended to show how natural language prompts can automatically trigger KQL queries, incident lookups, entity investigations, and lateral movement analysis - for example prompting Copilot to build a full kill chain timeline for a compromised user across CrowdStrike, Okta, AWS, and Palo Alto data sources and render it as a Mermaid diagram. You can also save your own KQL queries as custom MCP tools, turning proven hunting queries into reusable parameterized tools the whole SOC team can invoke through an AI assistant.
+#### In part 14, we would have connected the Microsoft Sentinel MCP server to VS Code and GitHub Copilot, exposing Sentinel's data lake and Defender XDR apis as callable tools for an AI agent. It required VS Code with the sentinel extension - which I do have - but also a paid GitHub Copilot subscription, and a fully onboarded Sentinel data lake for the data exploration prompts. Part 14 though, was intended to show how natural language prompts can automatically trigger KQL queries, incident lookups, entity investigations, and lateral movement analysis - for example prompting Copilot to build a full kill chain timeline for a compromised user across CrowdStrike, Okta, AWS, and Palo Alto data sources and render it as a Mermaid diagram. 
+
+#### You can also save your own KQL queries as custom MCP tools, turning proven hunting queries into reusable parameterized tools the whole SOC team can invoke through an AI assistant.
 
 ---
 <br>
