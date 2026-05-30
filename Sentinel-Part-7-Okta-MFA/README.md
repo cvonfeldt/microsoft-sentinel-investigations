@@ -1,4 +1,4 @@
-# Section 7 - Okta MFA Manipulation Detection
+# Sentinel Part 7 - Okta MFA Manipulation Detection
 
 <br>
 
