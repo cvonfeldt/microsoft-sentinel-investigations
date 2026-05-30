@@ -1,4 +1,4 @@
-# Section 9 - Billing Analysis & Cost Management
+# Sentinel part 9 - Billing Analysis & Cost Management
 <br>
 
 ## 9.1): Ingestion Volume Queries
