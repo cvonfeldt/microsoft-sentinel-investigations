@@ -1,7 +1,7 @@
 # Sentinel Part 10 - Table Management & Data Lake Configuration
 <br>
 
-## Background - Analytics vs Data Lake Tiers
+## Background - Analytics vs Data Lake Tiers:
 
 In this part of the lab we will learn how to view and manage table settings in the Microsoft Defender portal. We will explore the tables management screen, the difference between Analytics and Data lake tiers, and change retention settings, and then switch a table between tiers.
 
@@ -9,7 +9,7 @@ Some preliminary good-to-know distinctions between Analytics and Data Lakes, and
 
 Data collected into Microsoft Sentinel is stored in tables. Each table can be configured independently with its own storage tier and retention period. This gives you fine-grained control over cost and performance.
 
-Microsoft Sentinel supports two storage tiers:
+### Microsoft Sentinel supports two storage tiers:
 
 | Tier | Description | Best For |
 |---|---|---|
@@ -17,7 +17,7 @@ Microsoft Sentinel supports two storage tiers:
 | Data lake | Low-cost "cold" storage. Data is not available for real-time analytics but can be accessed via KQL jobs, Spark jobs, and notebooks. | Compliance logging, historical trend analysis, forensics, low-touch data |
 <br>
 
-Retention Periods - within the analytics tier, there are two retention concepts:
+### Retention Periods - within the analytics tier, there are two retention concepts:
 
 | Setting | Range | Description |
 |---|---|---|
@@ -27,7 +27,7 @@ Retention Periods - within the analytics tier, there are two retention concepts:
 
 Free storage: Microsoft Sentinel solution tables (like CommonSecurityLog, SecurityEvent) get 90 days of analytics retention for free. XDR tables get 30 days included in the XDR license.
 
-Cost Implications:
+### Cost Implications:
 
 | Action | Cost Impact |
 |---|---|
@@ -37,7 +37,7 @@ Cost Implications:
 | Moving a table from Data lake → Analytics tier | Re-enables real-time analytics, but incurs analytics tier ingestion cost |
 <br>
 
-Data Lake vs. Analytics tier data capabilities:
+### Data Lake vs. Analytics tier data capabilities:
 
 | Feature | Analytics Tier | Data Lake Tier |
 |---|---|---|
@@ -50,7 +50,7 @@ Data Lake vs. Analytics tier data capabilities:
 | Workbooks | Yes | No |
 <br>
 
-Built-in / Sentinel Tables:
+### Built-in / Sentinel Tables:
 
 | Table | Data Source | Tier |
 |---|---|---|
@@ -60,7 +60,7 @@ Built-in / Sentinel Tables:
 | SecurityEvent | Windows security events | Analytics |
 <br>
 
-Custom Tables:
+### Custom Tables:
 
 | Table | Data Source | Tier |
 |---|---|---|
@@ -70,7 +70,7 @@ Custom Tables:
 | PaloAlto_ThreatSummary_KQL_CL | KQL job output (Exercise 11) | Analytics |
 <br>
 
-Understanding those distinctions, of Analytics retention being essentially hot data that is compatible with sentinel features but incurs data charges, and Data Lakes being cold data that doesn't incur charges, we can now start this part of the lab.
+### Understanding those distinctions, of Analytics retention being essentially hot data that is compatible with sentinel features but incurs data charges, and Data Lakes being cold data that doesn't incur charges, we can now start this part of the lab.
 
 ---
 <br>
