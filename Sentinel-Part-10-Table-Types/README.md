@@ -15,6 +15,7 @@ Microsoft Sentinel supports two storage tiers:
 |---|---|---|
 | Analytics | High-performance "hot" storage. Data is fully available for real-time analytics, hunting, alerting, workbooks, and all Sentinel features. | Active detections, threat hunting, incident investigation |
 | Data lake | Low-cost "cold" storage. Data is not available for real-time analytics but can be accessed via KQL jobs, Spark jobs, and notebooks. | Compliance logging, historical trend analysis, forensics, low-touch data |
+<br>
 
 Retention Periods - within the analytics tier, there are two retention concepts:
 
@@ -22,6 +23,7 @@ Retention Periods - within the analytics tier, there are two retention concepts:
 |---|---|---|
 | Analytics retention | 30 days – 2 years | How long data stays in the "hot" analytics tier for real-time querying |
 | Total retention | Up to 12 years | Total data lifespan including analytics + data lake |
+<br>
 
 Free storage: Microsoft Sentinel solution tables (like CommonSecurityLog, SecurityEvent) get 90 days of analytics retention for free. XDR tables get 30 days included in the XDR license.
 
@@ -33,6 +35,7 @@ Cost Implications:
 | Extending total retention beyond analytics retention | Low-cost data lake storage charge for the additional duration |
 | Moving a table from Analytics → Data lake tier | Eliminates analytics tier ingestion cost, but data loses real-time features |
 | Moving a table from Data lake → Analytics tier | Re-enables real-time analytics, but incurs analytics tier ingestion cost |
+<br>
 
 Data Lake vs. Analytics tier data capabilities:
 
@@ -45,6 +48,7 @@ Data Lake vs. Analytics tier data capabilities:
 | Summary rules | Yes | Yes |
 | Notebooks | Yes | Yes |
 | Workbooks | Yes | No |
+<br>
 
 Built-in / Sentinel Tables:
 
@@ -54,6 +58,7 @@ Built-in / Sentinel Tables:
 | AWSCloudTrail | AWS CloudTrail | Analytics |
 | GCPAuditLogs | Google Cloud audit logs | Analytics |
 | SecurityEvent | Windows security events | Analytics |
+<br>
 
 Custom Tables:
 
@@ -63,6 +68,7 @@ Custom Tables:
 | MailGuard365_Threats_CL | MailGuard email threat data | Analytics |
 | OfficeActivity_CL | Office 365 activity | Analytics |
 | PaloAlto_ThreatSummary_KQL_CL | KQL job output (Exercise 11) | Analytics |
+<br>
 
 Understanding those distinctions, of Analytics retention being essentially hot data that is compatible with sentinel features but incurs data charges, and Data Lakes being cold data that doesn't incur charges, we can now start this part of the lab.
 
