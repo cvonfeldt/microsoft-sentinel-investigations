@@ -2,7 +2,7 @@
 
 <br>
 
-## 7.1 - Reviewing Okta MFA Events
+## 7.1): Reviewing Okta MFA Events
 
 First we can take a look at our okta events (which we got very familiar with in the in depth investigation) specifically having to do with mfa:
 
@@ -11,7 +11,7 @@ First we can take a look at our okta events (which we got very familiar with in 
 ---
 <br>
 
-## 7.2 - Base Detection Rule: MFA Manipulation
+## 7.2): Base Detection Rule: MFA Manipulation
 
 This time we will take a look at the custom rule associated with MFA manipulation:
 
@@ -42,7 +42,7 @@ If we wanted to improve this rule to identify a more specific indicator of compr
 ---
 <br>
 
-## 7.3 - Correlated Detection Rule: Foreign Login Followed by MFA Manipulation
+## 7.3): Correlated Detection Rule: Foreign Login Followed by MFA Manipulation
 
 ```kql
 let mfa_events = OktaV2_CL
@@ -87,7 +87,7 @@ This way, we have an automated alert that detects this correlation on its own, a
 ---
 <br>
 
-## 7.4 - Saving as a Detection Rule
+## 7.4): Saving as a Detection Rule
 
 Creating the alert, we see it at the top of our list!:
 
