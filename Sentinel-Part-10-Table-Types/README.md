@@ -72,11 +72,11 @@ Understanding those distinctions, of Analytics retention being essentially hot d
 
 Here we see a list of all of our tables in the workspace:
 
-![All tables](10.1.png)
+![All tables](screenshots/10.1.png)
 
 When we filter to only see data lakes, we can see we don't have any that are strictly data lake as of yet:
 
-![Data lake filter](10.2.png)
+![Data lake filter](screenshots/10.2.png)
 
 That said, all of the analytics tables have data lake integrated - we would just need to change the total retention time to "activate" it. It would just apply once the analytics retention ends for that data.
 
@@ -87,7 +87,7 @@ That said, all of the analytics tables have data lake integrated - we would just
 
 Clicking on specific tables, like CommonSecurityLog:
 
-![CommonSecurityLog details](10.3.png)
+![CommonSecurityLog details](screenshots/10.3.png)
 
 We can see whether it's a data lake or an analytics table, the analytics retention time, and the total retention time. Both analytics and total are at 30 days right now but the total would be much more if data lake was utilized for this table.
 
@@ -98,7 +98,7 @@ We can see whether it's a data lake or an analytics table, the analytics retenti
 
 Here we can (with the Okta table) see how you can change the duration of the analytics retention, and the total retention auto adjusts:
 
-![Retention settings](10.4.png)
+![Retention settings](screenshots/10.4.png)
 
 ---
 <br>
@@ -107,7 +107,7 @@ Here we can (with the Okta table) see how you can change the duration of the ana
 
 Now we extend a table's total retention time to utilize the data lake (one with high ingestion volume but that we don't really need like OfficeActivity_CL):
 
-![Extended retention](10.5.png)
+![Extended retention](screenshots/10.5.png)
 
 In this case, we upped the data lake retention to 2 years, so after the initial 30 days of analytics retention, the data lake rules apply. That said, after those 30 days, we could access the data from data lake and transfer it back to analytics data if we wanted to use it for hunting, alerting, workbooks, etc.
 
@@ -118,7 +118,7 @@ In this case, we upped the data lake retention to 2 years, so after the initial 
 
 We can also change a table completely to data lake if we don't need analytics retention at all. In Azure, we change the OfficeActivity_CL table to data lake completely here:
 
-![Table converted to data lake](10.6.png)
+![Table converted to data lake](screenshots/10.6.png)
 
 ---
 <br>
@@ -127,7 +127,7 @@ We can also change a table completely to data lake if we don't need analytics re
 
 Going back to sentinel we can see that the table is now our only data lake table:
 
-![Data lake table visible](10.7.png)
+![Data lake table visible](screenshots/10.7.png)
 
 ---
 <br>
@@ -143,7 +143,7 @@ With my subscription of Azure, you have to wait 7 days before changing data lake
 
 There is actually normally a workaround for this through use of KQL jobs. KQL jobs allow us to take data from the low-cost data lake tier and write the results to the analytics tier, where it becomes available for advanced hunting queries and custom detection rules. Unfortunately on my setup apparently my region doesn't support full data lake onboarding which is where KQL jobs would normally be created and managed:
 
-![Data lake onboarding limitation](10.8.png)
+![Data lake onboarding limitation](screenshots/10.8.png)
 
 Although my tables show that data lake is integrated and I can make tables into data lakes through Azure (indicating the infrastructure is provisioned), the exploration UI was not accessible. Normally this would be accessed via Microsoft Sentinel - data lake exploration - jobs/KQL queries.
 
