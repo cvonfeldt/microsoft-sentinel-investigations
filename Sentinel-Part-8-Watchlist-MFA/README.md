@@ -1,7 +1,7 @@
 # Sentinel Part 8 - Watchlist Integration & MFA Detection
 <br>
 
-## 8.1 - What Are Watchlists?
+## 8.1: What Are Watchlists?
 
 For this portion of the lab we will integrate watchlists. Watchlists are essentially CSV files that are uploaded to sentinel that contain preset outputs to match event logs that would indicate malicious behavior.
 
@@ -24,7 +24,7 @@ Each row after the first one would be checked against ingested eventlogs, and if
 ---
 <br>
 
-## 8.2 - Uploading the Watchlist to Sentinel
+## 8.2: Uploading the Watchlist to Sentinel
 
 Next, we will upload this CSV to sentinel to make a watchlist:
 
@@ -33,7 +33,7 @@ Next, we will upload this CSV to sentinel to make a watchlist:
 ---
 <br>
 
-## 8.3 - Verifying Watchlist Accessibility
+## 8.3: Verifying Watchlist Accessibility
 
 Then we will use advanced hunting to verify it's accessible:
 
@@ -44,7 +44,7 @@ We see all of the rows are correctly outputted.
 ---
 <br>
 
-## 8.4 - Correlating the Watchlist with a Detection Rule
+## 8.4: Correlating the Watchlist with a Detection Rule
 
 We can use our watchlist to correlate with one of the custom rules that detects AWS logins without multi-factor auth:
 
@@ -103,7 +103,7 @@ This one joins where EventSource is the same, but only takes results from the wa
 ---
 <br>
 
-## 8.5 - Saving as a Detection Rule
+## 8.5: Saving as a Detection Rule
 
 We can save this query as a detection rule enhanced with Criticality and ServiceName, and since we know that the watchlist will only apply to cloudtrail events, we can name it: Console login without MFA by {{UserIdentityUserName}} — {{Criticality}} service
 
