@@ -92,3 +92,14 @@ This way, we have an automated alert that detects this correlation on its own, a
 Creating the alert, we see it at the top of our list!:
 
 ![Detection rule created](screenshots/7.5.png)
+
+---
+<br>
+
+## Key Skills Demonstrated
+- Okta Identity Log Analysis
+- MFA Manipulation Detection (MITRE ATT&CK T1556)
+- Geolocation-Based Anomaly Detection
+- Temporal Correlation (time-windowed joins)
+- Multi-Source Event Correlation
+- Dynamic Alert Naming with Entity Fields
