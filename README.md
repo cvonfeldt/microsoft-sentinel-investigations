@@ -710,3 +710,19 @@ Building Microsoft Sentinel automation rules to enrich and prioritize incidents 
 
 ### [Part 6 - Palo Alto Firewall Port Scan Detection](Sentinel-Part-6-Port-Scanning/)
 Investigating and detecting internal network port scanning activity using Palo Alto firewall telemetry and KQL statistical baselining. Covers behavioral threshold calibration using percentiles, custom Sentinel analytics rule creation for MITRE ATT&CK T1046 (Network Service Discovery), scan-speed and port-diversity profiling, validation of detection logic, and identifying indicators of compromised hosts or insider threat activity through blocked connection analysis.
+
+### [Part 7 - Okta MFA Manipulation Detection](Sentinel-Part-7-Okta-MFA-Detection/)
+Building detection rules against Okta identity logs to catch MFA manipulation and account takeover. Covers a base rule for successful MFA deactivation events, then improving it through temporal correlation - joining foreign login activity against MFA manipulation within a 30-minute window as a near-certain indicator of Okta account takeover (MITRE ATT&CK T1556).
+
+### [Part 8 - Watchlist Integration & MFA Detection](Sentinel-Part-8-Watchlist-Integration/)
+Integrating CSV-based watchlists into Sentinel to enrich detection rules with business context. Covers uploading and querying watchlists, left outer join enrichment of AWS CloudTrail login events against critical service classifications, coalesce-based null handling for unmatched results, and dynamic alert naming using watchlist-derived entity fields.
+
+### [Part 9 - Billing Analysis & Cost Management](Sentinel-Part-9-Billing-Analysis/)
+Analyzing workspace ingestion costs and pipeline health through KQL queries and the Workspace Usage Workbook. Covers per-table billable ingestion volume, daily trend analysis, ingestion delay measurement using ingestion_time(), cost optimization strategies including DCR filtering and commitment tiers, and creating a scheduled ingestion volume alert.
+
+### [Part 10 - Table Management & Data Lake Configuration](Sentinel-Part-10-Table-Management/)
+Exploring Sentinel's tiered storage architecture and managing table retention across Analytics and Data Lake tiers. Covers modifying analytics and total retention periods, extending total retention to activate data lake storage, converting a table to data lake only via Azure, and understanding the cost and capability tradeoffs between tiers.
+
+### [Parts 11-17 - Data Lake Features (Environment Limitations)](Sentinel-Parts-11-17-Datalake-Explanations/)
+Conceptual walkthroughs of advanced data lake features that could not be completed due to regional onboarding limitations. Covers KQL job scheduling, real-time vs batch detection tradeoffs, PySpark notebook-based threat investigation, AI-assisted investigation via the Sentinel MCP Server, ADLS Gen2 data federation, split ingestion transformation rules, and custom cross-source attack chain graph construction using GQL.
+
