@@ -732,7 +732,7 @@ Conceptual walkthroughs of advanced data lake features that could not be complet
 
 ## Closing Thoughts:
 
-#### I really enjoyed this lab and it really strengthed my ability to work with KQL as well as Sentinel as a whole. It provided great practice in attack-chain mapping across multiple data platforms/sources to a variety of MITRE ATT&CK tactics and tecniques. I was a bit disappointed that I was unable to do so much of the second half of the lab due to environment limitations - the prerequisites stated in the lab directions made it seem like data lake would only be required for 2 or 3 parts when in reality it was much more. That said, through review of those parts as well as my own research, I was able to get a good grasp on what the missing parts covered and am confident I could employ them in my own detections/investigations. I will now begin the phase of implementing SOAR into this lab and others! 
+#### I really enjoyed this lab and it really strengthed my ability to work with KQL as well as Sentinel as a whole. It provided great practice in attack-chain mapping - across multiple data platforms/sources - to a variety of MITRE ATT&CK tactics and tecniques. I was a bit disappointed that I was unable to do so much of the second half of the lab due to environment limitations - the prerequisites stated in the lab directions made it seem like data lake would only be required for 2 or 3 parts when in reality it was much more. That said, through review of those parts as well as my own research, I was able to get a good grasp on what the missing parts covered and am confident I could employ them in my own detections/investigations. I will now begin the phase of implementing SOAR into this lab and others! 
 
 
 
