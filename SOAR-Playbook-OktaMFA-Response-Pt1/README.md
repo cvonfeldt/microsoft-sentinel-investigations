@@ -3,7 +3,7 @@
 ## Overview
 For this portion of the lab, we will create a response playbook for when Okta MFA takeover incident is detected - the playbook automatically enriches the source IP against VirusTotal and sends an analyst notification with threat intelligence context, reducing manual triage time and ensuring every alert gets immediate IP reputation data without requiring the analyst to manually pivot to external tools.
 
-This playbook extends and enhances the Okta MFA detection rule built in Part 7. The goal is to demonstrate a complete detect - enrich - notify response workflow that a real SOC team would use.
+This playbook extends and enhances the Okta MFA detection rule that we built in Part 7. The goal is to demonstrate a complete detect - enrich - notify response workflow that an SOC team would use in a real-world scenario.
 
 ---
 <br>
@@ -39,7 +39,7 @@ Extracts the source IP address from the incident's entity list using the Sentine
 Note: this step requires the triggering incident to have IP entities attached. The Okta MFA detection rule produces these via the `SrcIpAddr` field, so when wired to that rule this step will always have data to work with.
 
 **HTTP - VirusTotal API Call**
-Makes a GET request to the VirusTotal v3 IP address endpoint, authenticated via the `x-apikey` header. Returns a full JSON response containing reputation scores, analysis results from 90+ security vendors, WHOIS data, and AS ownership information.
+Makes a GET request to the VirusTotal v3 IP address endpoint, authenticated via the x-apikey header. Returns a full JSON response containing reputation scores, analysis results from 90+ security vendors, WHOIS data, and AS ownership information.
 
 ```
 GET https://www.virustotal.com/api/v3/ip_addresses/{IP}
