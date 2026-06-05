@@ -1,7 +1,7 @@
 # SOAR Playbook - Okta MFA Takeover Response
 
 ## Overview
-FOr this portion of the lab, we will create a response playbook for when Okta MFA takeover incident is detected - the playbook automatically enriches the source IP against VirusTotal and sends an analyst notification with threat intelligence context, reducing manual triage time and ensuring every alert gets immediate IP reputation data without requiring the analyst to manually pivot to external tools.
+For this portion of the lab, we will create a response playbook for when Okta MFA takeover incident is detected - the playbook automatically enriches the source IP against VirusTotal and sends an analyst notification with threat intelligence context, reducing manual triage time and ensuring every alert gets immediate IP reputation data without requiring the analyst to manually pivot to external tools.
 
 This playbook extends and enhances the Okta MFA detection rule built in Part 7. The goal is to demonstrate a complete detect - enrich - notify response workflow that a real SOC team would use.
 
