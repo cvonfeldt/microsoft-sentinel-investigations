@@ -84,14 +84,15 @@ The email includes incident name, severity, VirusTotal malicious detection count
 
 ![Run history](screenshots/run-history.png)
 
-All steps succeed end to end. The full playbook executes in ~ 1.4 seconds from trigger to email delivery.
+We see it runs successfully end to end. The full playbook executes in ~ 1.4 seconds from trigger to email delivery.
+
+- **Note: Dynamic IP extraction** - We see that the first Parse JSON step is skipped in the successful run through - Parse JSON 1 is designed to extract the source IP dynamically from incident entities. When triggered by the Okta MFA detection rule this works as expected since `SrcIpAddr` is mapped as an IP entity. When triggered manually against incidents without IP entities, this step is skipped and the HTTP call falls back to a default IP.
 
 ---
 <br>
 
-## Production Notes
+## Other Production Notes
 
-- **Dynamic IP extraction** - Parse JSON 1 is designed to extract the source IP dynamically from incident entities. When triggered by the Okta MFA detection rule this works as expected since `SrcIpAddr` is mapped as an IP entity. When triggered manually against incidents without IP entities, this step is skipped and the HTTP call falls back to a default IP.
 - **Automation rule wiring** - in production this playbook would be attached to a Sentinel automation rule that fires on incident creation where the analytic rule name matches the Okta MFA detection. This was configured manually for testing due to lab account permission constraints.
 - **API rate limits** - the free VirusTotal API tier allows 4 lookups per minute and 500 per day. In a high-volume environment an API key upgrade or caching layer would be needed.
 - **Future enhancements** - planned additions include a condition step to auto-escalate incident severity when `malicious > 0`, a Sentinel incident comment step to write VT findings directly back to the incident timeline, and an Okta API call to automatically suspend the compromised user account on detection.
