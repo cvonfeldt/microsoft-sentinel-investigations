@@ -34,9 +34,9 @@ Microsoft Sentinel Incident
 ## Step Breakdown
 
 **Parse JSON 1 - Entity Extraction**
-Extracts the source IP address from the incident's entity list using the Sentinel incident trigger's Entities output. The schema is defined to look for objects with `Type: "ip"` and pull the `Address` field. This feeds the IP directly into the VirusTotal API call without requiring any manual lookup.
+Extracts the source IP address from the incident's entity list using the Sentinel incident trigger's Entities output. The schema is defined to look for objects with Type: "ip" and pull the Address field. This feeds the IP directly into the VirusTotal API call without requiring any manual lookup.
 
-Note: this step requires the triggering incident to have IP entities attached. The Okta MFA detection rule produces these via the `SrcIpAddr` field, so when wired to that rule this step will always have data to work with.
+Note: this step requires the triggering incident to have IP entities attached. The Okta MFA detection rule produces these via the "SrcIpAddr" field, so when wired to that rule this step will always have data to work with.
 
 **HTTP - VirusTotal API Call**
 Makes a GET request to the VirusTotal v3 IP address endpoint, authenticated via the x-apikey header. Returns a full JSON response containing reputation scores, analysis results from 90+ security vendors, WHOIS data, and AS ownership information.
@@ -61,10 +61,10 @@ The following fields are extracted from the VirusTotal API response and included
 
 | Field | Description |
 |---|---|
-| `malicious` | Number of security vendors that flagged the IP as malicious |
-| `reputation` | VirusTotal community reputation score (higher = more trusted) |
-| `as_owner` | organization that owns the IP address block |
-| `country` | Country of origin for the IP |
+| malicious | Number of security vendors that flagged the IP as malicious |
+| reputation | VirusTotal community reputation score (higher = more trusted) |
+| as_owner | organization that owns the IP address block |
+| country | Country of origin for the IP |
 
 A malicious count above 0 combined with a low or negative reputation score is a strong indicator the source IP is known malicious infrastructure. A clean VT result doesn't rule out compromise but de-prioritizes the alert.
 
@@ -77,6 +77,7 @@ A malicious count above 0 combined with a low or negative reputation score is a 
 
 The email includes incident name, severity, VirusTotal malicious detection count, reputation score, AS owner, country, and the direct Sentinel incident URL for one-click investigation
 
+- **Note: Dynamic incident info extraction** - We see the incident name, severity, and URL are blank becuase it ran it as a test without a real incident properly wired. When triggered by an actual Okta MFA incident through an automation rule, these fields will populate automatically with the fields they are mapped to in Okta table.
 ---
 <br>
 
@@ -86,7 +87,7 @@ The email includes incident name, severity, VirusTotal malicious detection count
 
 We see it runs successfully end to end. The full playbook executes in ~ 1.4 seconds from trigger to email delivery.
 
-- **Note: Dynamic IP extraction** - We see that the first Parse JSON step is skipped in the successful run through - Parse JSON 1 is designed to extract the source IP dynamically from incident entities. When triggered by the Okta MFA detection rule this works as expected since `SrcIpAddr` is mapped as an IP entity. When triggered manually against incidents without IP entities, this step is skipped and the HTTP call falls back to a default IP.
+- **Note: Dynamic IP extraction** - We see that the first Parse JSON step is skipped in the successful run through - Parse JSON 1 is designed to extract the source IP dynamically from incident entities. Similar to the email, when triggered by the Okta MFA detection rule this works as expected since "SrcIpAddr" is mapped as IP entity. When triggered manually against incidents without IP entities, this step is skipped and the HTTP call falls back to a default IP.
 
 ---
 <br>
